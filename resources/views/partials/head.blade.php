@@ -13,4 +13,11 @@
 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-@fluxAppearance
+<script>
+    (() => {
+        const theme = localStorage.getItem('theme') ?? 'system';
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        document.documentElement.classList.toggle('dark', theme === 'dark' || (theme === 'system' && prefersDark));
+    })();
+</script>

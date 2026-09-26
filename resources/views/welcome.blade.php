@@ -54,20 +54,20 @@
         <div class="grain absolute inset-0 opacity-[0.04] mix-blend-overlay dark:opacity-[0.06]"></div>
     </div>
 
-    @if (Route::has('login'))
+    @if (Route::has('filament.admin.auth.login'))
         <nav class="absolute inset-x-0 top-0 z-10 flex items-center justify-end gap-2 p-6 text-sm">
             @auth
-                <a href="{{ route('dashboard') }}"
+                <a href="{{ route('filament.admin.pages.dashboard') }}"
                    class="rounded-md border border-zinc-900/10 bg-white/40 px-4 py-1.5 backdrop-blur-md transition hover:bg-white/70 dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10">
                     {{ __('Dashboard') }}
                 </a>
             @else
-                <a href="{{ route('login') }}"
+                <a href="{{ route('filament.admin.auth.login') }}"
                    class="rounded-md px-4 py-1.5 transition hover:bg-zinc-900/5 dark:hover:bg-white/10">
                     {{ __('Log in') }}
                 </a>
-                @if (Route::has('register') && \App\Models\AppSetting::get('registration_enabled', true))
-                    <a href="{{ route('register') }}"
+                @if (\App\Models\AppSetting::get('registration_enabled', true))
+                    <a href="{{ route('filament.admin.auth.register') }}"
                        class="rounded-md border border-zinc-900/10 bg-white/40 px-4 py-1.5 backdrop-blur-md transition hover:bg-white/70 dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10">
                         {{ __('Sign up') }}
                     </a>

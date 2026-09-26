@@ -63,10 +63,10 @@ return [
         // The file inside an island directory that declares its routes.
         'file' => 'Routes.php',
 
-        'prefix' => 'islands',
+        'prefix' => 'admin/islands',
 
         'name' => 'islands.',
 
-        'middleware' => ['web'],
+        'middleware' => ['web', 'auth'],
     ],
 ];
