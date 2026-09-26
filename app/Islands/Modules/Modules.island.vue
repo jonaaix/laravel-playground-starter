@@ -9,7 +9,10 @@ import ModuleGroupCard from './Components/ModuleGroupCard.vue';
 const island = useIsland();
 const props = island.props;
 const { t } = useTranslations();
-const { root, rootStyle } = useViewWidth();
+
+const CATALOG_WIDTH = 1024;
+
+const { root, rootStyle } = useViewWidth({ baseWidth: CATALOG_WIDTH });
 
 const query = ref(props.initial.q);
 
@@ -60,7 +63,7 @@ function setQuery(value) {
             />
         </div>
 
-        <div v-if="visibleGroups.length > 0" class="columns-[18rem] gap-4">
+        <div v-if="visibleGroups.length > 0" class="columns-1 gap-4 sm:columns-2 lg:columns-3">
             <ModuleGroupCard v-for="group in visibleGroups" :key="group.key" :group="group" />
         </div>
 
