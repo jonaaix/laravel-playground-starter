@@ -116,15 +116,15 @@ Files that belong to a record live in a directory of their own on the storage di
 
 - `<env>` — `app()->environment()`, so local and test files never land beside production
   ones on a shared disk.
-- `<model>` — the model's table name (`users`, `gads_campaigns`), so module files carry the
-  module prefix and leave with the module.
+- `<model>` — the Laravel model's class name in snake case (`User` → `user`,
+  `StockUnit` → `stock_unit`).
 - `<h1>/<h2>/<h3>/<rest>` — `md5(<salt>.<id>)` split 2, 2, 2 and the remaining 26
   characters. The salt is `config('filesystems.media_hash_salt')` (`MEDIA_HASH_SALT`), so the
   directory can be rebuilt from the record whenever it gets another file, but never guessed
   from its id. The salt never changes once files are stored.
 - The hash has no column of its own; it is part of the stored path. The record keeps the
   full relative path of each file (`avatar_path` →
-  `production/users/3f/a2/9c/…/avatar.webp`).
+  `production/user/3f/a2/9c/…/avatar.webp`).
 - Deleting the record deletes its directory.
 
 ## Available stack
