@@ -86,7 +86,7 @@
                 {{ __('Workspace online') }}
             </p>
             <h1 class="fade-up-2 text-balance text-5xl font-semibold tracking-tight sm:text-6xl md:text-7xl">
-                {{ __('Make something great.') }}
+                {{ __('Build something great.') }}
             </h1>
             <p class="fade-up-3 mx-auto mt-6 max-w-xl text-balance text-lg text-zinc-600 dark:text-zinc-400">
                 {{ __('Your workspace starter — sign in or create an account to begin.') }}
