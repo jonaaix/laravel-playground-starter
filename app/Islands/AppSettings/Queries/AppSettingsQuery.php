@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Islands\Workspace\Queries;
+namespace App\Islands\AppSettings\Queries;
 
 use App\Models\AppSetting;
 
-class WorkspaceSettingsQuery
+class AppSettingsQuery
 {
     /**
      * @return array{registrationEnabled: bool}

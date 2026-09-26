@@ -76,6 +76,10 @@ import is the most common avoidable diff here.
 - **Every app view is a Filament page hosting an island.** Extend
   `App\Filament\Pages\IslandPage` in `app/Filament/Pages/`, name the island and build its
   props — the page draws nothing itself. CRUD too: no Filament resources, tables or forms.
+- **Every page is registered in the module catalog.** It implements
+  `App\Filament\Navigation\ListedInModules`, names its `ModuleGroupEnum` group and sets
+  `$shouldRegisterNavigation = false` — the `Modules` page lists it from there. The sidebar
+  carries only Dashboard and Modules; pin anything else only when the user asks.
 - **No Livewire components of our own.** Livewire is present because Filament runs on it.
 - **React and Inertia** are not used in this project.
 

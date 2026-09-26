@@ -4,12 +4,12 @@ use App\Models\AppSetting;
 use App\Models\User;
 
 it('returns 401 for guests', function () {
-    $this->putJson(route('islands.workspace.update'), ['registrationEnabled' => false])->assertUnauthorized();
+    $this->putJson(route('islands.app-settings.update'), ['registrationEnabled' => false])->assertUnauthorized();
 });
 
 it('returns 403 for a disabled user', function () {
     $this->actingAs(User::factory()->disabled()->create())
-        ->putJson(route('islands.workspace.update'), ['registrationEnabled' => false])
+        ->putJson(route('islands.app-settings.update'), ['registrationEnabled' => false])
         ->assertForbidden();
 });
 
@@ -17,7 +17,7 @@ it('turns public registration off', function () {
     AppSetting::set('registration_enabled', true);
 
     $this->actingAs(User::factory()->create())
-        ->putJson(route('islands.workspace.update'), ['registrationEnabled' => false])
+        ->putJson(route('islands.app-settings.update'), ['registrationEnabled' => false])
         ->assertOk()
         ->assertJsonPath('data.registrationEnabled', false);
 
@@ -26,7 +26,7 @@ it('turns public registration off', function () {
 
 it('rejects a value that is not a boolean', function () {
     $this->actingAs(User::factory()->create())
-        ->putJson(route('islands.workspace.update'), ['registrationEnabled' => 'maybe'])
+        ->putJson(route('islands.app-settings.update'), ['registrationEnabled' => 'maybe'])
         ->assertUnprocessable()
         ->assertJsonValidationErrors(['registrationEnabled' => 'The registration enabled field must be true or false.']);
 });

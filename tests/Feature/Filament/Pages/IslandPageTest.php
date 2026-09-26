@@ -1,12 +1,13 @@
 <?php
 
+use App\Filament\Pages\AppSettings;
+use App\Filament\Pages\Modules;
 use App\Filament\Pages\Users;
-use App\Filament\Pages\Workspace;
 use App\Models\User;
 
 it('redirects guests to the sign-in page', function (string $page) {
     $this->get($page::getUrl())->assertRedirect(route('filament.admin.auth.login'));
-})->with([Users::class, Workspace::class]);
+})->with([Modules::class, Users::class, AppSettings::class]);
 
 it('mounts the island for a signed-in user', function (string $page, string $island) {
     $this->actingAs(User::factory()->create())
@@ -15,8 +16,9 @@ it('mounts the island for a signed-in user', function (string $page, string $isl
         ->assertSee('data-island', escape: false)
         ->assertSee($island);
 })->with([
+    [Modules::class, 'Modules'],
     [Users::class, 'Users'],
-    [Workspace::class, 'Workspace'],
+    [AppSettings::class, 'AppSettings'],
 ]);
 
 it('returns 403 for a disabled user', function () {

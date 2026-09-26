@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Islands\Workspace;
+namespace App\Islands\AppSettings;
 
-use App\Islands\Workspace\Queries\WorkspaceSettingsQuery;
-use App\Islands\Workspace\Writers\WorkspaceSettingsWriter;
+use App\Islands\AppSettings\Queries\AppSettingsQuery;
+use App\Islands\AppSettings\Writers\AppSettingsWriter;
 use Filament\Facades\Filament;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-class WorkspaceIslandController extends Controller
+class AppSettingsIslandController extends Controller
 {
     public function __construct(
-        private readonly WorkspaceSettingsQuery $query,
-        private readonly WorkspaceSettingsWriter $writer,
+        private readonly AppSettingsQuery $query,
+        private readonly AppSettingsWriter $writer,
     ) {}
 
     public function update(Request $request): JsonResponse

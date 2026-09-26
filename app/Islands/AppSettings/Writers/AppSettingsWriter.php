@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Islands\Workspace\Writers;
+namespace App\Islands\AppSettings\Writers;
 
 use App\Models\AppSetting;
 
-class WorkspaceSettingsWriter
+class AppSettingsWriter
 {
     /**
      * @param  array{registrationEnabled: bool}  $settings

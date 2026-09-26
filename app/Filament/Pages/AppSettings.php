@@ -6,38 +6,40 @@ namespace App\Filament\Pages;
 
 use App\Filament\Navigation\ListedInModules;
 use App\Filament\Navigation\ModuleGroupEnum;
-use App\Islands\Users\UsersProps;
+use App\Islands\AppSettings\AppSettingsProps;
 use BackedEnum;
 use Filament\Support\Icons\Heroicon;
 
-class Users extends IslandPage implements ListedInModules
+class AppSettings extends IslandPage implements ListedInModules
 {
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
     protected static bool $shouldRegisterNavigation = false;
 
+    protected static ?string $slug = 'app-settings';
+
     public static function getModuleGroup(): ModuleGroupEnum
     {
-        return ModuleGroupEnum::Administration;
+        return ModuleGroupEnum::System;
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Users');
+        return __('App Settings');
     }
 
     public function getTitle(): string
     {
-        return __('Users');
+        return __('App Settings');
     }
 
     protected function islandName(): string
     {
-        return 'Users';
+        return 'AppSettings';
     }
 
     protected function islandProps(): array
     {
-        return app(UsersProps::class)->build(request());
+        return app(AppSettingsProps::class)->build(request());
     }
 }
