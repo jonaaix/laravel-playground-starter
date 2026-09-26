@@ -118,13 +118,13 @@ Files that belong to a record live in a directory of their own on the storage di
   ones on a shared disk.
 - `<model>` — the model's table name (`users`, `gads_campaigns`), so module files carry the
   module prefix and leave with the module.
-- `<h1>/<h2>/<h3>/<rest>` — a random md5 hash split 2, 2, 2 and the remaining 26
-  characters. Generated once per record, never derived from its id or any of its data — a
-  path must neither reveal nor enumerate records.
+- `<h1>/<h2>/<h3>/<rest>` — `md5(<salt>.<table>.<id>)` split 2, 2, 2 and the remaining 26
+  characters. The salt is `config('filesystems.media_hash_salt')` (`MEDIA_HASH_SALT`), so the
+  directory can be rebuilt from the record whenever it gets another file, but never guessed
+  from its id. The salt never changes once files are stored.
 - The hash has no column of its own; it is part of the stored path. The record keeps the
   full relative path of each file (`avatar_path` →
-  `production/users/3f/a2/9c/…/avatar.webp`), and every further file of the record goes into
-  the same directory.
+  `production/users/3f/a2/9c/…/avatar.webp`).
 - Deleting the record deletes its directory.
 
 ## Available stack

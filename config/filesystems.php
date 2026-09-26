@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Media Hash Salt
+    |--------------------------------------------------------------------------
+    |
+    | Salts the hash that places a record's files in their own directory, so a
+    | path can be rebuilt from the record but never guessed from its id. Must
+    | never change once files are stored.
+    |
+    */
+
+    'media_hash_salt' => env('MEDIA_HASH_SALT'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
     |
