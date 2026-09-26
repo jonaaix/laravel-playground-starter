@@ -121,7 +121,7 @@ Files that belong to a record live in a directory of their own on the storage di
   ones on a shared disk.
 - `<model>` — the model's table name (`users`, `gads_campaigns`), so module files carry the
   module prefix and leave with the module.
-- `<h1>/<h2>/<h3>/<rest>` — `md5(<salt>.<table>.<id>)` split 2, 2, 2 and the remaining 26
+- `<h1>/<h2>/<h3>/<rest>` — `md5(<salt>.<id>)` split 2, 2, 2 and the remaining 26
   characters. The salt is `config('filesystems.media_hash_salt')` (`MEDIA_HASH_SALT`), so the
   directory can be rebuilt from the record whenever it gets another file, but never guessed
   from its id. The salt never changes once files are stored.
