@@ -32,7 +32,8 @@ A module owns the backend half of a feature: its tables, models, services and jo
 - **Folder:** `Models/`, `Services/`, `Jobs/`, `routes.php`, `resources/views/`.
 - **Routes:** the module's own `routes.php`, mounted by the provider under the kebab-cased
   module name with a matching route-name prefix and the `web` middleware — `Gads` serves
-  `/gads/…` as `gads.…`. These are the pages that host the module's islands.
+  `/gads/…` as `gads.…`. Only for routes outside the panel — the pages that host the
+  module's islands are Filament pages (see Frontend).
 - **Migrations:** stay in `database/migrations/`; filename and table carry the module prefix.
 - **Translations:** `lang/<locale>/<module>.php` → `__('gads.dashboard.title')`. The root
   lang directory is loaded by Laravel itself; nothing to wire.
@@ -67,11 +68,12 @@ import is the most common avoidable diff here.
 
 - **Blade + Alpine** for public, indexable pages — see below. Never as the cheaper way out
   of an app view.
-- **Livewire and Flux carry the existing shell only** — auth pages, settings pages, layout
-  and navigation under `resources/views/pages/` and `resources/views/layouts/`. Work on
-  those where they are, and follow their conventions. Do not extend them into feature
-  territory, and do not reach for `<flux:*>` or a new Livewire component for a new view.
-- **Filament** only when the user explicitly asks for an admin panel or heavy CRUD.
+- **Filament is the shell.** The `admin` panel at `/admin` owns layout, navigation, sign-in,
+  registration, password reset, profile and two-factor. Its shipped pages are used as is.
+- **Every app view is a Filament page hosting an island.** Extend
+  `App\Filament\Pages\IslandPage` in `app/Filament/Pages/`, name the island and build its
+  props — the page draws nothing itself. CRUD too: no Filament resources, tables or forms.
+- **No Livewire components of our own.** Livewire is present because Filament runs on it.
 - **React and Inertia** are not used in this project.
 
 ### Public pages are server-rendered
@@ -90,9 +92,7 @@ So the boundary is indexability, not complexity:
   list states. Nobody needs to find those in a search engine, so there is nothing left to
   weigh: build the island. "It only renders server-known state", "it is just a few cards",
   "every action is a redirect anyway" are not reasons to skip it — a page grows past that
-  premise and the decision never gets revisited. The one exception is **legacy maintenance**:
-  work on the existing Livewire/Flux shell stays in its own idiom (see above). Extending a
-  page that is already there is fine; starting a new view in it is not.
+  premise and the decision never gets revisited.
 - **A public page may host an island** for its interactive part, as long as the content that
   matters for indexing lives in the Blade around it. A blog post is Blade; its comment box
   can be an island.
@@ -109,8 +109,8 @@ not install general-purpose UI libraries.
 Everything below is installed and ready — no setup required.
 
 - **UI:** Laravel Islands (+ Datagrid), Tailwind CSS 4, Alpine, ApexCharts, Echo + Pusher.js.
-  Livewire 4 and Flux UI are present for the shell — see Frontend above.
-- **Infrastructure:** Horizon, Reverb, Scout + Meilisearch, Fortify, Laravel scheduler via
+  Filament 5 carries the shell — see Frontend above.
+- **Infrastructure:** Horizon, Reverb, Scout + Meilisearch, Laravel scheduler via
   supercronic.
 - **AI:** `laravel/ai` — text and image generation, agents, embeddings, structured output.
 - **Data & files:** spatie/laravel-data, spatie/laravel-pdf + Browsershot,
