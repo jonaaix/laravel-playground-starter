@@ -10,7 +10,7 @@ const island = useIsland();
 const props = island.props;
 const { t } = useTranslations();
 
-const CATALOG_WIDTH = 1024;
+const CATALOG_WIDTH = 1120;
 
 const { root, rootStyle } = useViewWidth({ baseWidth: CATALOG_WIDTH });
 
