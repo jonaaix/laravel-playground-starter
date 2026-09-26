@@ -1,7 +1,9 @@
 <script setup>
 import { useTranslations } from '@aaix/laravel-islands/vue';
-import { Badge, Button } from '@aaix/laravel-islands/vue/helpers';
+import { Badge, IconButton } from '@aaix/laravel-islands/vue/helpers';
 import { formatRelative } from '@shared/format.js';
+import IconPencilSquare from '@shared/Icons/IconPencilSquare.vue';
+import IconTrash from '@shared/Icons/IconTrash.vue';
 
 defineProps({
     row: { type: Object, required: true },
@@ -39,8 +41,18 @@ const { t } = useTranslations();
         </td>
         <td class="px-3 py-2.5">
             <div class="flex items-center justify-end gap-1">
-                <Button tone="ghost" size="sm" @click="emit('edit', row)">{{ t('Edit') }}</Button>
-                <Button v-if="!row.isSelf" tone="ghost" size="sm" @click="emit('delete', row)">{{ t('Delete') }}</Button>
+                <IconButton :label="t('Edit')" @click="emit('edit', row)">
+                    <IconPencilSquare />
+                </IconButton>
+                <IconButton
+                    v-if="!row.isSelf"
+                    :label="t('Delete')"
+                    tone="plain"
+                    class="text-red-600 hover:bg-red-50 active:bg-red-100 dark:text-red-400 dark:hover:bg-red-500/15 dark:active:bg-red-500/25"
+                    @click="emit('delete', row)"
+                >
+                    <IconTrash />
+                </IconButton>
             </div>
         </td>
     </tr>
