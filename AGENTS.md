@@ -111,6 +111,25 @@ own `Components/` folder in the project's design language, or propose a package 
 component is a beast on its own (calendars, WYSIWYG editors, charts, file uploaders). Do
 not install general-purpose UI libraries.
 
+## Storage
+
+Files that belong to a record live in a directory of their own on the storage disk:
+
+    <env>/<model>/<h1>/<h2>/<h3>/<rest>/<file>
+
+- `<env>` — `app()->environment()`, so local and test files never land beside production
+  ones on a shared disk.
+- `<model>` — the model's table name (`users`, `gads_campaigns`), so module files carry the
+  module prefix and leave with the module.
+- `<h1>/<h2>/<h3>/<rest>` — a random md5 hash split 2, 2, 2 and the remaining 26
+  characters. Generated once per record, never derived from its id or any of its data — a
+  path must neither reveal nor enumerate records.
+- The hash has no column of its own; it is part of the stored path. The record keeps the
+  full relative path of each file (`avatar_path` →
+  `production/users/3f/a2/9c/…/avatar.webp`), and every further file of the record goes into
+  the same directory.
+- Deleting the record deletes its directory.
+
 ## Available stack
 
 Everything below is installed and ready — no setup required.
