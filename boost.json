@@ -1,0 +1,47 @@
+{
+    "agents": [
+        "claude_code"
+    ],
+    "cloud": false,
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch": false,
+    "packages": [
+        "aaix/eloquent-translatable",
+        "aaix/laravel-ai-costs",
+        "aaix/laravel-countries",
+        "aaix/laravel-easy-backups",
+        "aaix/laravel-islands",
+        "aaix/laravel-islands-datagrid",
+        "aaix/laravel-patches",
+        "aaix/laravel-tall-architect",
+        "spatie/laravel-pdf"
+    ],
+    "sail": false,
+    "skills": [
+        "infer-conventions",
+        "ai-sdk-development",
+        "fortify-development",
+        "laravel-best-practices",
+        "testing-best-practices",
+        "configuring-horizon",
+        "scout-development",
+        "fluxui-development",
+        "livewire-development",
+        "tailwindcss-development",
+        "echo-development",
+        "eloquent-translatable",
+        "laravel-ai-costs-development",
+        "seeding-countries",
+        "using-countries",
+        "easy-backups-development",
+        "islands-development",
+        "islands-datagrid-development",
+        "laravel-patches",
+        "laravel-pdf",
+        "ui-patterns",
+        "eloquent-audit",
+        "queues-audit",
+        "structure-audit"
+    ]
+}
