@@ -126,6 +126,9 @@ Files that belong to a record live in a directory of their own on the storage di
   full relative path of each file (`avatar_path` →
   `production/users/3f/a2/9c/…/avatar.webp`).
 - Deleting the record deletes its directory.
+- Build it with `App\Models\Concerns\HasMediaDirectory` — `mediaPath('avatar.webp')`,
+  `mediaDirectory()`, `mediaDisk()`; it also removes the directory on delete. Never
+  concatenate a media path by hand.
 
 ## Available stack
 

@@ -16,5 +16,8 @@ rm -rf ./.git \
 ```shell
 cp .env.example .env
 
+# Salt for media paths — set once, never change after files are stored
+sed -i.bak "s/^MEDIA_HASH_SALT=.*/MEDIA_HASH_SALT=$(openssl rand -hex 32)/" .env && rm .env.bak
+
 cp compose.prod.yaml compose.yaml
 ```
