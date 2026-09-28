@@ -72,7 +72,7 @@ Generic UI primitives. All Tailwind-styled — register the package with your bu
 | --- | --- |
 | `Tooltip` | hover label, fixed positioning, auto-flip; **never** use the native `title` attribute |
 | `Popover` | anchored layer with `anchor`, `open`, `width`, `offset`, `margin` |
-| `Modal` | teleported dialog with focus-trap, backdrop and Escape handling; controlled — only emits `close`, callsite owns `:open` |
+| `Modal` | teleported dialog with focus-trap, backdrop and Escape handling, holds the page scroll; controlled — only emits `close`, callsite owns `:open`; `align="top"` for content that changes height |
 | `FormModal` | `Modal` wrapper for Save-forms: content sits in a `<form>`, footer has Cancel + primary in one row, wording as props, `#title` / `#footer` as escape hatches |
 | `WysiwygEditor` | for the one field that needs rich text |
 
