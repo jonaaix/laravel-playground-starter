@@ -80,6 +80,8 @@ import is the most common avoidable diff here.
   `App\Filament\Navigation\ListedInModules`, names its `ModuleGroupEnum` group and sets
   `$shouldRegisterNavigation = false` — the `Modules` page lists it from there. The sidebar
   carries only Dashboard and Modules; pin anything else only when the user asks.
+  A tool outside the panel (Log Viewer, Horizon) is listed through
+  `App\Filament\Navigation\ModuleLinks`, with the gate ability that guards it.
 - **No Livewire components of our own.** Livewire is present because Filament runs on it.
 - **React and Inertia** are not used in this project.
 

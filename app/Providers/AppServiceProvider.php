@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Horizon\Http\Middleware\Authenticate;
@@ -28,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $router = $this->app->make('router');
         $router->middlewareGroup('horizon', ['web', Authenticate::class]);
-        \Gate::define('viewLogViewer', static fn ($user) => $user?->hasRole('admin'));
+        Gate::define('viewLogViewer', static fn (?User $user): bool => $user !== null && ! $user->is_disabled);
 
         $this->configureDefaults();
 
