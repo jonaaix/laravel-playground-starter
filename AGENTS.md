@@ -407,8 +407,8 @@ Before implementing a feature: first questions until scope and behaviour are una
 - **Section marker:** a `╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌` bar, the section name with its emoji, the same bar again. Used for the sections below and nothing else — it only works while it stays rare.
 - Before implementation work, open with the plan under a `🎯 Plan` marker — what you are about to build, in a few lines. Before the first edit, never as part of the summary afterwards.
 - When the summary runs longer than a few sentences, close it with a `🔑 TL;DR` marker — two or three lines on what is different now. It comes after the details and before `🚀 Next` or `❓ Questions`.
-- Questions go at the end, under a `❓ Questions` marker. Numbered, one per item, continuing across the conversation — never restarting at 1. Each question offers at least two lettered options, one per line, unless only the user can supply the answer; a) is the recommendation, prefixed `⭐ Recommended:`. "ok" accepts every recommendation. Options and alternatives are lettered wherever else they appear.
-- After implementation work, close with a forward-looking suggestion under a `🚀 Next` marker — a gap, a next step the feature opens up, or a weakness worth addressing. Something you could implement next, not something to observe or decide later. If questions are pending, those take the slot instead — never both. Never end a response as if the work were simply over.
+- Questions go at the end, under a `❓ Questions` marker. Numbered, one per item, continuing across the conversation — never restarting at 1. Each question offers at least two lettered options, one per line, unless only the user can supply the answer; a) is the recommendation, prefixed `⭐ Recommended:`. "ok" accepts every recommendation, or the `🚀 Next` step when no question is pending. Options and alternatives are lettered wherever else they appear.
+- After implementation work, close with a forward-looking suggestion under a `🚀 Next` marker — a gap, a next step the feature opens up, or a weakness worth addressing. One step you could implement next, not something to observe or decide later. If questions are pending, those take the slot instead — never both. Never end a response as if the work were simply over.
 - Emoji mark what a line is, not just in section headings: ⚠️ before a risk or caveat, 🔧 before a change you made or propose, ✅ before something done, 💡 before an idea, and others where they fit. Only at the start of a line, never inside a sentence. Don't decorate prose.
 - End every response with a `╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌` bar, so the reply is visibly closed off from anything that follows.
 
@@ -462,7 +462,7 @@ PHP >= 8.5, Laravel >= 13.x, Filament >= 5.x, Livewire, Alpine.js, Tailwind CSS 
 ## Architectural Standards
 
 - **Filament & Islands:** Filament is the panel shell; its shipped pages (login, profile, …) may be used as is. Every new view is a Filament page hosting an island (`aaix/laravel-islands`, tables via `aaix/laravel-islands-datagrid`) — CRUD too, no Filament resources, tables or forms. Alpine only for small UI state in Blade. Exception: SEO-relevant pages are Blade + Alpine — islands render client-side.
-- **Where to reuse from:** `resources/views/components/`, `app/Services/`. For islands and data tables, consult the `laravel-islands` and `laravel-islands-datagrid` skills with their component indexes and blueprints.
+- **Where to reuse from:** `resources/views/components/`, `app/Services/`, and the helpers of both islands packages — inventoried in `islands-development/helpers-index.md`. Blueprints for a view and a data table live in the `islands-development` and `islands-datagrid-development` skills.
 
 ## Workflow
 
@@ -528,8 +528,9 @@ Keep it short enough to stay accurate. A file nobody trusts is worse than no fil
 
 # Design System
 
-This project's visual decisions. Principles live in the UX Principles rules below, concrete
-class recipes in the `ui-patterns` skill — read it before building UI.
+This project's visual decisions. Principles live in the UX Principles rules below. Before
+writing markup, check whether the project or one of its UI libraries already ships a helper
+for it; the `ui-patterns` skill holds class recipes for what none covers.
 
 ## Visual language
 

@@ -1,6 +1,6 @@
 ---
 name: ui-patterns
-description: Concrete UI class recipes for this project — the patterns behind the always-on design-system and ux-principles guidelines. Load it before building or changing UI, whenever the question is what a component should actually look like in markup rather than which rule applies.
+description: Concrete UI class recipes for this project — the patterns behind the always-on design-system and ux-principles guidelines. Load it before building or changing UI, once it is clear that no existing helper covers the case — the recipes fill the gaps, they don't replace a helper.
 ---
 
 # UI Patterns
