@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "99d26f1876ac9d6098d5ae215c848249",
+    "content-hash": "b7dcd43e77bfdbf5194f8da59e4078d3",
     "packages": [
         {
             "name": "aaix/eloquent-translatable",
@@ -377,6 +377,60 @@
                 "source": "https://github.com/jonaaix/laravel-islands-datagrid/tree/v1.0.39"
             },
             "time": "2026-09-17T17:42:23+00:00"
+        },
+        {
+            "name": "aaix/laravel-islands-search",
+            "version": "v1.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jonaaix/laravel-islands-search.git",
+                "reference": "3f98f3671edca343b4cf44c8f04f1173f26e92cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jonaaix/laravel-islands-search/zipball/3f98f3671edca343b4cf44c8f04f1173f26e92cd",
+                "reference": "3f98f3671edca343b4cf44c8f04f1173f26e92cd",
+                "shasum": ""
+            },
+            "require": {
+                "aaix/laravel-islands": "^1.0",
+                "blade-ui-kit/blade-heroicons": "^2.0",
+                "illuminate/support": "^12.0|^13.0",
+                "laravel/scout": "^10.0|^11.0",
+                "php": ">=8.3"
+            },
+            "require-dev": {
+                "filament/filament": "^5.0",
+                "orchestra/testbench": "^11.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0"
+            },
+            "suggest": {
+                "filament/filament": "Mounts the search into Filament panels through IslandsSearchPlugin (^5.0)."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Aaix\\LaravelIslandsSearch\\IslandsSearchServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Aaix\\LaravelIslandsSearch\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A keyboard-driven global search modal built on Laravel Islands and Laravel Scout, with an optional Filament panel integration.",
+            "support": {
+                "issues": "https://github.com/jonaaix/laravel-islands-search/issues",
+                "source": "https://github.com/jonaaix/laravel-islands-search/tree/v1.0.9"
+            },
+            "time": "2026-09-28T22:35:39+00:00"
         },
         {
             "name": "aaix/laravel-patches",

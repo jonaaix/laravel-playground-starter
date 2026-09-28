@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use Aaix\LaravelIslandsSearch\Filament\IslandsSearchPlugin;
 use App\Filament\Auth\Login;
 use App\Filament\Auth\Register;
+use App\Filament\Search\ModulesSearchSource;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -43,6 +45,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->colors([
                 'primary' => Color::Blue,
+            ])
+            ->plugins([
+                IslandsSearchPlugin::make()->sources([
+                    ModulesSearchSource::class,
+                ]),
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->renderHook(PanelsRenderHook::HEAD_END, fn (): string => Blade::render("@vite('resources/js/app.js')"))

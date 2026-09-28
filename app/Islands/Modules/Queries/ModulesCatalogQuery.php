@@ -21,7 +21,7 @@ class ModulesCatalogQuery
      */
     public function groups(Panel $panel): array
     {
-        $entries = [...$this->pageEntries($panel), ...$this->linkEntries()];
+        $entries = $this->entries($panel);
 
         return collect(ModuleGroupEnum::cases())
             ->map(fn (ModuleGroupEnum $group): array => [
@@ -34,9 +34,8 @@ class ModulesCatalogQuery
                     ->map(fn (array $entry): array => [
                         'label' => $entry['label'],
                         'url' => $entry['url'],
-                        'icon' => $entry['icon'],
+                        'icon' => $this->iconSvg($entry['icon']),
                     ])
-                    ->sortBy('label', SORT_NATURAL | SORT_FLAG_CASE)
                     ->values()
                     ->all(),
             ])
@@ -46,7 +45,18 @@ class ModulesCatalogQuery
     }
 
     /**
-     * @return list<array{group: ModuleGroupEnum, label: string, url: string, icon: string}>
+     * @return list<array{group: ModuleGroupEnum, label: string, url: string, icon: ?BackedEnum}>
+     */
+    public function entries(Panel $panel): array
+    {
+        return collect([...$this->pageEntries($panel), ...$this->linkEntries()])
+            ->sortBy('label', SORT_NATURAL | SORT_FLAG_CASE)
+            ->values()
+            ->all();
+    }
+
+    /**
+     * @return list<array{group: ModuleGroupEnum, label: string, url: string, icon: ?BackedEnum}>
      */
     private function pageEntries(Panel $panel): array
     {
@@ -56,14 +66,14 @@ class ModulesCatalogQuery
                 'group' => $page::getModuleGroup(),
                 'label' => $page::getNavigationLabel(),
                 'url' => $page::getUrl(panel: $panel->getId()),
-                'icon' => $this->iconSvg($page::getNavigationIcon()),
+                'icon' => $page::getNavigationIcon() instanceof BackedEnum ? $page::getNavigationIcon() : null,
             ])
             ->values()
             ->all();
     }
 
     /**
-     * @return list<array{group: ModuleGroupEnum, label: string, url: string, icon: string}>
+     * @return list<array{group: ModuleGroupEnum, label: string, url: string, icon: ?BackedEnum}>
      */
     private function linkEntries(): array
     {
@@ -73,18 +83,14 @@ class ModulesCatalogQuery
                 'group' => $link->group,
                 'label' => $link->label,
                 'url' => route($link->routeName),
-                'icon' => $this->iconSvg($link->icon),
+                'icon' => $link->icon,
             ])
             ->values()
             ->all();
     }
 
-    private function iconSvg(mixed $icon): string
+    private function iconSvg(?BackedEnum $icon): string
     {
-        if (! $icon instanceof BackedEnum) {
-            return '';
-        }
-
-        return svg('heroicon-'.$icon->value)->toHtml();
+        return $icon === null ? '' : svg('heroicon-'.$icon->value)->toHtml();
     }
 }

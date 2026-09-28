@@ -7,6 +7,7 @@
 import './echo';
 
 import { startVueIslands } from '@aaix/laravel-islands/vue';
+import { searchIslands } from '@aaix/laravel-islands-search';
 
 const featureIslands = Object.fromEntries(
     Object.entries(import.meta.glob('../../app/Islands/**/*.island.vue', { eager: true }))
@@ -14,6 +15,7 @@ const featureIslands = Object.fromEntries(
 );
 
 startVueIslands({
+    ...searchIslands,
     ...import.meta.glob('./islands/**/*.island.vue', { eager: true }),
     ...featureIslands,
 });

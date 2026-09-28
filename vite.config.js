@@ -3,6 +3,9 @@ import laravel from 'laravel-vite-plugin';
 import tailwindcss from "@tailwindcss/vite";
 import vue from '@vitejs/plugin-vue';
 import { fileURLToPath, URL } from 'node:url';
+import islands from './vendor/aaix/laravel-islands/vite.js';
+import islandsDatagrid from './vendor/aaix/laravel-islands-datagrid/vite.js';
+import islandsSearch from './vendor/aaix/laravel-islands-search/vite.js';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
@@ -21,15 +24,12 @@ export default defineConfig(({ mode }) => {
             }),
             tailwindcss(),
             vue(),
+            islands({ theme: { output: false } }),
+            islandsDatagrid(),
+            islandsSearch(),
         ],
         resolve: {
             alias: {
-                '@aaix/laravel-islands': fileURLToPath(
-                    new URL('./vendor/aaix/laravel-islands/resources/js', import.meta.url),
-                ),
-                '@aaix/laravel-islands-datagrid': fileURLToPath(
-                    new URL('./vendor/aaix/laravel-islands-datagrid/resources/js', import.meta.url),
-                ),
                 '@shared': fileURLToPath(
                     new URL('./app/Islands/@Shared', import.meta.url),
                 ),
