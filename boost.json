@@ -1,6 +1,8 @@
 {
     "agents": [
-        "claude_code"
+        "claude_code",
+        "codex",
+        "opencode"
     ],
     "cloud": false,
     "guidelines": true,
@@ -15,7 +17,8 @@
         "aaix/laravel-islands-datagrid",
         "aaix/laravel-patches",
         "aaix/laravel-tall-architect",
-        "spatie/laravel-pdf"
+        "spatie/laravel-pdf",
+        "filament/filament"
     ],
     "sail": false,
     "skills": [
@@ -36,6 +39,7 @@
         "islands-development",
         "islands-datagrid-development",
         "laravel-patches",
+        "filament-development",
         "laravel-pdf",
         "ui-patterns",
         "eloquent-audit",
