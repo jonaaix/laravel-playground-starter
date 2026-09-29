@@ -9,7 +9,7 @@ const { root, rootStyle } = useViewWidth();
 </script>
 
 <template>
-    <div ref="root" class="island-view dashboard mx-auto w-full space-y-6" :style="rootStyle">
+    <div ref="root" class="island-view dashboard mx-auto w-full space-y-8" :style="rootStyle">
         <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             {{ t('Welcome back, :name', { name: props.userName }) }}
         </h1>
