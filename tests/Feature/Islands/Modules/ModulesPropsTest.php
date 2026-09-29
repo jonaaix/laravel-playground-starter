@@ -19,7 +19,7 @@ it('lists every module page under its group, in the group order', function () {
         ->and($props['groups'][0]['entries'][0]['icon'])->toContain('<svg')
         ->and($props['groups'][1])->toMatchArray(['key' => 'system', 'label' => 'System'])
         ->and($props['groups'][1]['entries'][0])->toMatchArray(['label' => 'App Settings', 'url' => AppSettings::getUrl()])
-        ->and($props['groups'][1]['entries'][1])->toMatchArray(['label' => 'Log Viewer', 'url' => route('log-viewer.index')]);
+        ->and($props['groups'][1]['entries'][1])->toMatchArray(['label' => 'Log Viewer', 'url' => route('module-links.open', ['moduleRef' => 'log-viewer.index'])]);
 });
 
 it('hides a tool link the user may not open', function () {

@@ -45,7 +45,7 @@ class ModulesCatalogQuery
     }
 
     /**
-     * @return list<array{group: ModuleGroupEnum, label: string, url: string, icon: ?BackedEnum}>
+     * @return list<array{ref: string, group: ModuleGroupEnum, label: string, url: string, icon: ?BackedEnum}>
      */
     public function entries(Panel $panel): array
     {
@@ -56,13 +56,14 @@ class ModulesCatalogQuery
     }
 
     /**
-     * @return list<array{group: ModuleGroupEnum, label: string, url: string, icon: ?BackedEnum}>
+     * @return list<array{ref: string, group: ModuleGroupEnum, label: string, url: string, icon: ?BackedEnum}>
      */
     private function pageEntries(Panel $panel): array
     {
         return collect($panel->getPages())
             ->filter(fn (string $page): bool => is_subclass_of($page, ListedInModules::class) && $page::canAccess())
             ->map(fn (string $page): array => [
+                'ref' => $page::getRouteName($panel),
                 'group' => $page::getModuleGroup(),
                 'label' => $page::getNavigationLabel(),
                 'url' => $page::getUrl(panel: $panel->getId()),
@@ -73,16 +74,17 @@ class ModulesCatalogQuery
     }
 
     /**
-     * @return list<array{group: ModuleGroupEnum, label: string, url: string, icon: ?BackedEnum}>
+     * @return list<array{ref: string, group: ModuleGroupEnum, label: string, url: string, icon: ?BackedEnum}>
      */
     private function linkEntries(): array
     {
         return collect($this->links->all())
             ->filter(fn (ModuleLinkData $link): bool => Gate::allows($link->ability))
             ->map(fn (ModuleLinkData $link): array => [
+                'ref' => $link->routeName,
                 'group' => $link->group,
                 'label' => $link->label,
-                'url' => route($link->routeName),
+                'url' => route('module-links.open', ['moduleRef' => $link->routeName]),
                 'icon' => $link->icon,
             ])
             ->values()
