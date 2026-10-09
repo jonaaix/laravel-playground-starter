@@ -54,6 +54,39 @@ app/Islands/<Game>/
 └── …                      Queries/, Writers/, Presenters/ as for any island
 ```
 
+## First start
+
+When this file is active and no game exists yet, the first task is a skeleton that shows
+the direction — genre-neutral, nothing a specific game would have to tear out. Planning
+file first, as for any multi-step work.
+
+1. **Ask for the game's name** — it names the module, island, routes and tables. Nothing
+   else needs deciding up front.
+2. **Propose installing `three`** — the only dependency the skeleton needs.
+3. **Backend:** `app/Modules/<Game>/` with its `routes.php` serving `/<game>/play`. No
+   tables yet — they arrive with the first feature that stores something.
+4. **Host:** `php artisan make:island <Game>`; a Filament page extending `IslandPage`,
+   implementing `ListedInModules` under a new `<Game>` case in `ModuleGroupEnum`; the
+   full-viewport Blade shell for `/<game>/play`.
+5. **Game client** in `Game/`, every role folder from the tree above with its first file:
+   - fixed-step loop with interpolation, pause on hidden tab;
+   - input mapped to actions — move, look, jump, pause — for keyboard, mouse and gamepad;
+   - a test scene: ground plane, sky colour, one directional light with shadow, a few
+     instanced props for scale;
+   - a controllable stand-in (capsule) with a third-person follow camera, movement as
+     plain simulation code without physics;
+   - `dispose()` covering all of it, and the `window.__game` dev hook.
+6. **Game UI** in `Game/Ui/`: a minimal HUD and a pause menu on Escape.
+7. **Panel dev tools** in the island's `Components/`: the live snapshot (fps, draw calls,
+   position, state) and two or three tuning values (move speed, camera distance) sent as
+   commands.
+8. **Verify:** both hosts render, the console is clean, an HMR remount does not double the
+   loop or grow `renderer.info.memory`, a Playwright screenshot after stepping a fixed
+   number of ticks shows the scene.
+
+Not part of the skeleton — each arrives when the game needs it: physics, real assets and
+their pipeline, persistence, multiplayer, audio.
+
 ## Dependencies
 
 - **`three` is the renderer.** Import from `three` and `three/addons/…` through Vite —
