@@ -56,12 +56,14 @@ app/Islands/<Game>/
 
 ## First start
 
-When this file is active and no game exists yet, the first task is a skeleton that shows
-the direction — genre-neutral, nothing a specific game would have to tear out. Planning
-file first, as for any multi-step work.
+Activating this file builds nothing. When the user first asks to start on the game and
+none exists yet, the first task is a skeleton that shows the direction — genre-neutral,
+nothing a specific game would have to tear out. Planning file first, as for any
+multi-step work.
 
-1. **Ask for the game's name** — it names the module, island, routes and tables. Nothing
-   else needs deciding up front.
+1. **The code name is `Game`** — module, island, routes (`/game/…`) and tables (`game_*`).
+   The title players see is a translation string, set whenever the user decides on it;
+   never ask for a name before building, and never rename the code to match a title.
 2. **Propose installing `three`** — the only dependency the skeleton needs.
 3. **Backend:** `app/Modules/<Game>/` with its `routes.php` serving `/<game>/play`. No
    tables yet — they arrive with the first feature that stores something.
