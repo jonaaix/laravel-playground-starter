@@ -4,9 +4,9 @@ Real-time play between browsers for the three.js game. Requires `threejs-game`.
 
 ## Transport
 
-- **Reverb through Echo** — both installed. Reuse the shared Echo instance in
-  `resources/js/echo.js` or the islands' subscription helpers; never open a second
-  connection.
+- **Reverb through Echo** — both installed. The host passes the shared Echo instance from
+  `resources/js/echo.js` into `createGame` options; the game never opens a second
+  connection or imports app code for it.
 - **Rooms are presence channels** (`<game>.room.{id}`), authorized in
   `routes/channels.php` against a `<game>_rooms` table in the module. Presence gives
   joins, leaves and the member list for free.
@@ -20,7 +20,7 @@ Real-time play between browsers for the three.js game. Requires `threejs-game`.
 ## Rates & payloads
 
 - **Send state at 10–20 Hz**, not per frame. The sending rate is one constant in the
-  engine.
+  game client.
 - **Payloads are small and flat:** arrays of rounded numbers, short keys, no serialized
   objects. Stay well under Reverb's message size limit.
 - **Remote entities are interpolated** about 100 ms behind the latest snapshot; the local
@@ -33,7 +33,7 @@ Real-time play between browsers for the three.js game. Requires `threejs-game`.
   the simulation. A request-cycle "tick" endpoint is never the answer.
 - **Server-authoritative simulation** (anti-cheat, physics on the server) means a separate
   long-running process — a sideproject such as a Node WebSocket server sharing the
-  engine's `World/` code. That is an explicit decision before it is built, not a drift.
+  game's `World/` code. That is an explicit decision before it is built, not a drift.
 - Disconnects and reconnects are part of the design: a player who drops keeps their slot
   for a grace period, a reconnect receives the current state, not a replay.
 

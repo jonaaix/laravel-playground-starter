@@ -17,7 +17,7 @@ Models, textures and audio for the three.js game. Requires `threejs-game`.
 
 ## Where files live
 
-- **Shipped assets** live with the island: `app/Islands/<Game>/Assets/`, referenced via
+- **Shipped assets** live with the game: `app/Islands/<Game>/Game/Media/`, referenced via
   `new URL('./…', import.meta.url)` or a `?url` import, so Vite hashes and cache-busts
   them and they leave with the island.
 - **Decoder files** (Draco, Basis transcoder, Meshopt) come from the installed `three`
@@ -27,14 +27,14 @@ Models, textures and audio for the three.js game. Requires `threejs-game`.
 - **Source files and the optimisation pipeline are a sideproject:**
   `sideprojects/<game>-assets/` with its own `package.json`, running
   `@gltf-transform/cli` (dedupe, weld, Meshopt/Draco, KTX2 resize and encode). Its output
-  is written into the island's `Assets/`. Raw sources over a few MB need an explicit
+  is written into `Game/Media/`. Raw sources over a few MB need an explicit
   decision (Git LFS or outside the repository) before they are committed.
 - **Third-party assets** carry their origin and licence in a `credits.json` next to them,
   added in the same commit as the asset.
 
 ## Loading
 
-- **One asset service in `Engine/Assets/`** owns the loaders, a cache keyed by URL and the
+- **One asset service in `Game/Assets/`** owns the loaders, a cache keyed by URL and the
   `LoadingManager`. Nothing else calls `GLTFLoader` directly.
 - **Loading is per level:** preload what the level needs behind a loading screen fed by
   the manager's progress, release what the next level does not need.
