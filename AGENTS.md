@@ -139,7 +139,7 @@ Files that belong to a record live in a directory of their own on the storage di
 
 Everything below is installed and ready — no setup required.
 
-- **UI:** Laravel Islands (+ Datagrid), Tailwind CSS 4, Alpine, ApexCharts, Echo + Pusher.js.
+- **UI:** Laravel Islands (+ Datagrid), Tailwind CSS 4, Alpine, Chart.js, Echo + Pusher.js.
   Filament 5 carries the shell — see Frontend above.
 - **Infrastructure:** Horizon, Reverb, Scout + Meilisearch, Laravel scheduler via
   supercronic.
@@ -170,11 +170,9 @@ buys before installing.
 
 # Laravel Boost Guidelines
 
-The Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. These guidelines should be followed closely to ensure the best experience when building Laravel applications.
-
 ## Foundational Context
 
-This application is a Laravel application running on PHP 8.5. You are an expert with the Laravel ecosystem. Always use the APIs that match the installed major version of each package — do not assume a version.
+This application is a Laravel application running on PHP 8.5. Always use the APIs that match the installed major version of each package — do not assume a version.
 
 Before relying on a package's API, confirm its installed version:
 - PHP packages: run `composer show --direct` to list direct dependencies with versions, or `composer show <vendor/package>` for a single package.
@@ -201,15 +199,11 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 ## Frontend Bundling
 
-- If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `npm run build`, `npm run dev`, or `composer run dev`. Ask them.
+- If a frontend change doesn't show in the UI or you get a "Unable to locate file in Vite manifest" error, run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
 
 ## Documentation Files
 
 - You must only create documentation files if explicitly requested by the user.
-
-## Replies
-
-- Be concise in your explanations - focus on what's important rather than explaining obvious details.
 
 === boost rules ===
 
@@ -239,8 +233,7 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 ## Project Rules
 
-- This project contains committed, area-grouped rules in `.ai/rules` when that directory exists (settled decisions, non-obvious traps, standing constraints). Framework and package guidelines that only apply to specific paths (testing, frontend, components) also live there, under `.ai/rules/boost` — this is not just recorded decisions, it is load-bearing guidance you have not seen inline. Before you enter plan mode or create/edit any file, you MUST first: open @.ai/rules/index.md (it maps file globs to rule files), read every rule file whose globs cover the path(s) in scope, and run `grep -rin 'keyword' .ai/rules` to catch what a path match alone misses. Do not write code until you have read and are following every matching rule. If `.ai/rules` does not exist, continue without it.
-- Record a rule with `record-rule` only when the user explicitly asks for one. Instructions for the work at hand are not rules, no matter how emphatic: "remove this typo", "use X here" are work to do, not rules to record. Never record a rule on your own initiative, as a byproduct of a change, or to summarize what you just did. When the user does ask, pass a `glob` (e.g. `app/Http/Controllers/**`), a short `title`, and a few-line `note`. Use `record-rule` rather than your native memory or notes tool, because native memory is personal and session-scoped, while only `.ai/rules` is shared with the team and persists in the repo.
+- This project contains committed, area-grouped rules in `.ai/rules` when that directory exists, including path-scoped framework guidelines under `.ai/rules/boost`. Before you enter plan mode or create/edit any file, you MUST first: open @.ai/rules/index.md (it maps file globs to rule files), read every rule file whose globs cover the path(s) in scope, and run `grep -rin 'keyword' .ai/rules` to catch what a path match alone misses. Do not write code until you have read and are following every matching rule. If `.ai/rules` does not exist, continue without it.
 
 ## Artisan
 
@@ -270,7 +263,6 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 # Deployment
 
 - Laravel can be deployed using [Laravel Cloud](https://cloud.laravel.com/), which is the fastest way to deploy and scale production Laravel applications.
-- Activate the `deploying-to-cloud` skill whenever deploying to Laravel Cloud, configuring Cloud environments or resources, using the Cloud CLI, or troubleshooting Cloud deployments.
 
 === tests rules ===
 
@@ -307,10 +299,6 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - When creating models for tests, use the factories for the models. Check if the factory has custom states that can be used before manually setting up the model.
 - Faker: Use methods such as `$this->faker->word()` or `fake()->randomDigit()`. Follow existing conventions whether to use `$this->faker` or `fake()`.
 - When creating tests, make use of `php artisan make:test [options] {name}` to create a feature test, and pass `--unit` to create a unit test. Most tests should be feature tests.
-
-## Vite Error
-
-- If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
 
 === livewire/core rules ===
 
@@ -476,7 +464,7 @@ PHP >= 8.5, Laravel >= 13.x, Filament >= 5.x, Livewire, Alpine.js, Tailwind CSS 
 
 # Planning
 
-Multi-step work is tracked in a file under `.ai/planning/`, so any developer or agent can
+Multi-step work is tracked in a file under `.ai/project/planning/`, so any developer or agent can
 take over from a cold start.
 
 ## Procedure
@@ -484,11 +472,13 @@ take over from a cold start.
 - Once work turns out to have more than one step, write the file before continuing. It is not
   a document created for the user — it is how the work is tracked. Never offer it, never ask
   whether to create it.
-- **Write it straight to its final location:** `.ai/planning/<year>/<month>/<YYYY-MM-DD>_<feature>.md`,
+- **Write it straight to its final location:** `.ai/project/planning/<year>/<month>/<YYYY-MM-DD>_<feature>.md`,
   dated by when the work starts. Nothing is moved or archived later.
 - Update it as the work moves: state, milestones, decisions. Overwrite, don't append —
   the file describes how things *are*, not what happened. The history is in the git log.
 - Commit it with the code it belongs to, not separately.
+- Reference agreed behavior in the Feature Book (`.ai/project/features/`) and audit findings in `.ai/project/audits/`.
+  Keep milestones and implementation gaps here; do not duplicate feature rules or audit coverage.
 - To pick up unfinished work, look at the current and previous month folder for files with
   open milestones. When starting work in an area that has been touched before, look for its
   earlier file.
@@ -496,7 +486,7 @@ take over from a cold start.
 ## File structure
 
 - **Goal** — what this feature does, and how you can tell it's finished.
-- **Milestones** — the steps to get there, in order, each marked open or done.
+- **Milestones** — the steps to get there, in order, as `- [ ]` / `- [x]` checkboxes.
 - **State** — where the work stands right now: what exists in the code, what is still missing.
 - **Decisions** — what was settled and why, including what was rejected. Only what explains
   the current state; not the back and forth that led to it.
@@ -525,6 +515,47 @@ new decision supersedes. Never append at the end. Restructure freely, but never 
 rule says while doing it.
 
 Keep it short enough to stay accurate. A file nobody trusts is worse than no file.
+
+---
+
+# Feature Book
+
+The Feature Book holds the agreed purpose and workings of every substantial feature, one
+chapter per feature, in clear, precise language, at
+`.ai/project/features/<domain>/<feature>.md`. `index.md` lists feature IDs, links and
+one-line descriptions.
+
+## Procedure
+
+- Chapters are part of the work, not documentation created for the user: write and update
+  them without offering or asking. This rule is the user's explicit, standing request for
+  these files.
+- A feature needs a chapter once its behavior comes from several parts working together —
+  a flow, a process, a routine, a chain of functions — rather than from a single function,
+  or once it follows agreed rules the code alone would not make obvious.
+
+## Authority
+
+Describe the current agreed behavior, not guesses or future proposals. Never change a
+chapter merely to match the code. Do not invent restrictions or technical requirements to
+fill out a chapter: implementation choices remain open unless explicitly required or
+necessary for the agreed behavior.
+
+## Maintenance
+
+Read the relevant chapters before changing a feature. Establish intended behavior before
+implementing a new substantial feature. Update affected passages with authorized behavior
+changes, once per completed change. Refactors and repairs restoring the described behavior
+need no rewrite. Preserve unrelated content, feature IDs and creation dates; update the
+index only when its entries change.
+
+## Skills
+
+Use `feature-book` to create or substantially revise a chapter — it carries the format.
+Use `feature-book-audit` for comprehensive implementation checks only on user request. When
+normal work reveals substantial changes since an audit or concrete contradictions, suggest
+an audit once at task completion. Age alone is insufficient; do not scan audit history on
+every task.
 
 ---
 
@@ -643,7 +674,7 @@ rebuilding this by hand.
 
 # UX Principles
 
-Portable rules for admin panels and ERPs. No framework, no project specifics.
+Portable rules for admin panels, ERPs and platforms. No framework, no project specifics.
 Rules of thumb — deviate knowingly, not by accident.
 
 ## State & feedback
@@ -728,16 +759,28 @@ Movement explains a change; it never announces itself.
 - **Filters beside the table** where the viewport allows, floating over it when not — never
   above the table's own toolbar.
 
-## Components & wording
+## Components
 
 - **Two call sites is a coincidence, three is a component.** Search before building; a
   near-duplicate is worse than a long file.
 - **Wording never goes into a shared component.** It takes labels as props — the
   application owns the strings.
+
+## Wording
+
+- **Every text reads the way Amazon or a professional SaaS product would write it** —
+  labels, hints, placeholders, messages and mails alike: short, plain, professional, in
+  every language. Write it, then cut it in half.
 - **Every string goes through the translation layer**, English as the key.
 - **UI text names things, it doesn't explain them.** Labels are terms, not phrases —
-  "Slowest", not "Takes the longest". All UI text is product copy: if it wouldn't pass
-  in a professional SaaS interface, rewrite it.
+  "Slowest", not "Takes the longest"; "Send a message", not "You will never see their
+  address".
+- **Say only what the person needs to act.** Never how it works behind the scenes, what
+  is stored, who sees what, or why a rule exists — unless they asked.
+- **No sentiment, slang or cuteness.** "Thank you for your support", not "You made our
+  day". No exclamation marks for enthusiasm, no religious, community or in-group jargon.
+- **Platform copy stays neutral.** A tenant's own content may carry its own voice; the
+  platform's never does.
 
 ---
 

@@ -136,7 +136,7 @@ Files that belong to a record live in a directory of their own on the storage di
 
 Everything below is installed and ready — no setup required.
 
-- **UI:** Laravel Islands (+ Datagrid), Tailwind CSS 4, Alpine, ApexCharts, Echo + Pusher.js.
+- **UI:** Laravel Islands (+ Datagrid), Tailwind CSS 4, Alpine, Chart.js, Echo + Pusher.js.
   Filament 5 carries the shell — see Frontend above.
 - **Infrastructure:** Horizon, Reverb, Scout + Meilisearch, Laravel scheduler via
   supercronic.

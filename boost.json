@@ -41,6 +41,8 @@
         "laravel-patches",
         "filament-development",
         "laravel-pdf",
+        "feature-book",
+        "feature-book-audit",
         "ui-patterns",
         "eloquent-audit",
         "queues-audit",
