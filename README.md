@@ -25,3 +25,7 @@ done
 
 cp compose.prod.yaml compose.yaml
 ```
+
+```shell
+php artisan db:seed --class="Aaix\\LaravelCountries\\Database\\Seeders\\DatabaseSeeder"
+```

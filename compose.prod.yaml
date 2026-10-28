@@ -65,14 +65,19 @@ services:
         restart: unless-stopped
 
     redis:
-        image: redis:7-alpine
+        image: redis:8-alpine
         volumes:
             - redis_volume:/data
-        command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}" ]
+        command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}", "--maxmemory", "1536mb", "--maxmemory-policy", "volatile-lru" ]
         restart: unless-stopped
+        deploy:
+            resources:
+                limits:
+                    memory: 2G
 
     meilisearch:
         image: getmeili/meilisearch:latest
+        command: meilisearch --upgrade-db
         environment:
             MEILI_MASTER_KEY: ${MEILISEARCH_KEY}
             MEILI_NO_ANALYTICS: "true"
