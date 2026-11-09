@@ -1,5 +1,7 @@
 <?php
 
+use NotificationChannels\WebPush\PushSubscription;
+
 return [
 
     /**
@@ -16,7 +18,7 @@ return [
     /**
      * This is model that will be used to for push subscriptions.
      */
-    'model' => \NotificationChannels\WebPush\PushSubscription::class,
+    'model' => PushSubscription::class,
 
     /**
      * This is the name of the table that will be created by the migration and
@@ -28,7 +30,7 @@ return [
      * This is the database connection that will be used by the migration and
      * the PushSubscription model shipped with this package.
      */
-    'database_connection' => env('WEBPUSH_DB_CONNECTION', env('DB_CONNECTION', 'mariadb')),
+    'database_connection' => env('WEBPUSH_DB_CONNECTION', env('DB_CONNECTION', 'sqlite')),
 
     /**
      * The Guzzle client options used by Minishlink\WebPush.
