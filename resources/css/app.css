@@ -4,6 +4,7 @@
 @source '../../app/Islands/**/*';
 @source '../../vendor/aaix/laravel-islands/resources/js/**/*';
 @source '../../vendor/aaix/laravel-islands-datagrid/resources/js/**/*';
+@source '../../vendor/aaix/laravel-islands-gallery/resources/js/**/*';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
 @custom-variant dark (&:where(.dark, .dark *));

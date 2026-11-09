@@ -68,8 +68,9 @@ about extending the app — it is a reason to protect the user's data.
 
 **Islands are the primary frontend.** A feature view is an island — `aaix/laravel-islands`
 for the view itself, `aaix/laravel-islands-datagrid` for anything list-shaped. Both ship a
-full set of helper components, composables and hosts; read the `islands-development`,
-`islands-datagrid-development` and `ui-patterns` skills before writing markup. A
+full set of helper components, composables and hosts; read the `archipelago-development`
+skill (it names the skill of each islands package to read) and `ui-patterns` before
+writing markup. A
 hand-rolled modal, tooltip, toolbar or sort menu that already exists behind a one-line
 import is the most common avoidable diff here.
 
@@ -170,6 +171,10 @@ buys before installing.
 - Data and reports → files in the workspace, referenced by path. Never paste large file
   contents or long tool output into chat.
 - Interactive things → a route, handed over as a URL.
+
+=== .ai/app rules ===
+
+# App Specific Guidelines
 
 === foundation rules ===
 

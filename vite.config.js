@@ -6,6 +6,7 @@ import { fileURLToPath, URL } from 'node:url';
 import islands from './vendor/aaix/laravel-islands/vite.js';
 import islandsDatagrid from './vendor/aaix/laravel-islands-datagrid/vite.js';
 import islandsSearch from './vendor/aaix/laravel-islands-search/vite.js';
+import islandsGallery from './vendor/aaix/laravel-islands-gallery/vite.js';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
@@ -27,6 +28,7 @@ export default defineConfig(({ mode }) => {
             islands({ theme: { output: false } }),
             islandsDatagrid(),
             islandsSearch(),
+            islandsGallery(),
         ],
         resolve: {
             alias: {
