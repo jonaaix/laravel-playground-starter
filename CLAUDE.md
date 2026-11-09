@@ -154,8 +154,9 @@ Everything below is installed and ready — no setup required.
 - **Notifications:** WebPush.
 - **Observability:** opcodesio/log-viewer, aaix/laravel-easy-backups.
 - **i18n:** aaix/eloquent-translatable, outhebox/blade-flags, aaix/laravel-countries.
-- **Services (docker-compose):** MariaDB (`mariadb`), Redis (`redis`),
-  Meilisearch (`meilisearch`).
+- **Database:** SQLite (`database/database.sqlite`) is the default connection. MariaDB is
+  commented out in the compose files and can be re-enabled there.
+- **Services (docker-compose):** Redis (`redis`), Meilisearch (`meilisearch`).
 - **MCP:** Laravel Boost, Playwright (browser automation, screenshots), Context7 (library docs).
 
 ## Dependencies

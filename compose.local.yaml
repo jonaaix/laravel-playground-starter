@@ -2,7 +2,7 @@
 # You should disable port-exposure in production!
 
 volumes:
-    db_volume:
+#    db_volume:
     redis_volume:
     meili_volume:
     claude_home:
@@ -21,35 +21,36 @@ services:
             DEV_NPM_RUN_DEV: true
             ENABLE_HORIZON_WORKER: true
             ENABLE_REVERB_SERVER: true
+            ORBIT_RELEASE_KEY: ${ORBIT_RELEASE_KEY}
         ports:
             - "8008:8000" # php
             - "5178:5178" # vite
             - "8088:8080" # reverb
         restart: unless-stopped
         depends_on:
-            - mariadb
+#            - mariadb
             - redis
 
-    mariadb:
-        image: mariadb:lts
-        command:
-            - '--character-set-server=utf8mb4'
-            - '--collation-server=utf8mb4_unicode_ci'
-            - '--skip-name-resolve' # Disable DNS lookups (not needed in Docker, improves performance)
-        volumes:
-            - db_volume:/var/lib/mysql/:delegated
-        cap_add:
-            - SYS_NICE # Allow the container to adjust process priority (optional for performance tuning)
-        environment:
-            MARIADB_INITDB_SKIP_TZINFO: '1' # Skip loading DB time zone tables (improves performance)
-            ### Database initialization ###
-            MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-            MARIADB_USER: ${DB_USERNAME}
-            MARIADB_PASSWORD: ${DB_PASSWORD}
-            MARIADB_DATABASE: ${DB_DATABASE}
-        ports:
-            - "3308:3306"
-        restart: unless-stopped
+#    mariadb:
+#        image: mariadb:lts
+#        command:
+#            - '--character-set-server=utf8mb4'
+#            - '--collation-server=utf8mb4_unicode_ci'
+#            - '--skip-name-resolve' # Disable DNS lookups (not needed in Docker, improves performance)
+#        volumes:
+#            - db_volume:/var/lib/mysql/:delegated
+#        cap_add:
+#            - SYS_NICE # Allow the container to adjust process priority (optional for performance tuning)
+#        environment:
+#            MARIADB_INITDB_SKIP_TZINFO: '1' # Skip loading DB time zone tables (improves performance)
+#            ### Database initialization ###
+#            MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+#            MARIADB_USER: ${DB_USERNAME}
+#            MARIADB_PASSWORD: ${DB_PASSWORD}
+#            MARIADB_DATABASE: ${DB_DATABASE}
+#        ports:
+#            - "3308:3306"
+#        restart: unless-stopped
 
     redis:
         image: redis:7-alpine

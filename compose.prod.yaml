@@ -6,7 +6,7 @@ networks:
         external: true
 
 volumes:
-    db_volume:
+#    db_volume:
     redis_volume:
     meili_volume:
     claude_home:
@@ -15,7 +15,7 @@ services:
     # docker compose exec -it php_ai claude
     # docker compose exec -it php_ai bash
     php:
-        image: ghcr.io/jonaaix/laravel-aio:1.3-php8.5-fpm-claude-beta
+        image: ghcr.io/jonaaix/laravel-aio:1.3-php8.5-fpm-claude-gamma
         stop_grace_period: 60s
         volumes:
             - ./:/app
@@ -27,6 +27,7 @@ services:
             ENABLE_REVERB_SERVER: true
             ENABLE_CLAUDE_THREADS: true
             ENABLE_AI_NONTECH_MODE: true
+            ORBIT_RELEASE_KEY: ${ORBIT_RELEASE_KEY}
         labels:
             caddy_0: ${LARAVEL_DOMAIN}
             caddy_0.reverse_proxy: "{{upstreams 8000}}"
@@ -42,27 +43,27 @@ services:
             - main-proxy
             - default
         depends_on:
-            - mariadb
+#            - mariadb
             - redis
 
-    mariadb:
-        image: mariadb:lts
-        command:
-            - '--character-set-server=utf8mb4'
-            - '--collation-server=utf8mb4_unicode_ci'
-            - '--skip-name-resolve' # Disable DNS lookups (not needed in Docker, improves performance)
-        volumes:
-            - db_volume:/var/lib/mysql/:delegated
-        cap_add:
-            - SYS_NICE # Allow the container to adjust process priority (optional for performance tuning)
-        environment:
-            MARIADB_INITDB_SKIP_TZINFO: '1' # Skip loading DB time zone tables (improves performance)
-            ### Database initialization ###
-            MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-            MARIADB_USER: ${DB_USERNAME}
-            MARIADB_PASSWORD: ${DB_PASSWORD}
-            MARIADB_DATABASE: ${DB_DATABASE}
-        restart: unless-stopped
+#    mariadb:
+#        image: mariadb:lts
+#        command:
+#            - '--character-set-server=utf8mb4'
+#            - '--collation-server=utf8mb4_unicode_ci'
+#            - '--skip-name-resolve' # Disable DNS lookups (not needed in Docker, improves performance)
+#        volumes:
+#            - db_volume:/var/lib/mysql/:delegated
+#        cap_add:
+#            - SYS_NICE # Allow the container to adjust process priority (optional for performance tuning)
+#        environment:
+#            MARIADB_INITDB_SKIP_TZINFO: '1' # Skip loading DB time zone tables (improves performance)
+#            ### Database initialization ###
+#            MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+#            MARIADB_USER: ${DB_USERNAME}
+#            MARIADB_PASSWORD: ${DB_PASSWORD}
+#            MARIADB_DATABASE: ${DB_DATABASE}
+#        restart: unless-stopped
 
     redis:
         image: redis:8-alpine
@@ -86,19 +87,19 @@ services:
             - meili_volume:/meili_data
         restart: unless-stopped
 
-    pma:
-        image: phpmyadmin:latest
-        environment:
-            PMA_HOST: mysql
-            PMA_PORT: 3306
-            APACHE_PORT: 8080
-            UPLOAD_LIMIT: 1G
-        restart: unless-stopped
-        labels:
-            caddy: ${PMA_DOMAIN}
-            caddy.reverse_proxy: "{{upstreams 8080}}"
-        networks:
-            - main-proxy
-            - default
-        depends_on:
-            - mariadb
+#    pma:
+#        image: phpmyadmin:latest
+#        environment:
+#            PMA_HOST: mysql
+#            PMA_PORT: 3306
+#            APACHE_PORT: 8080
+#            UPLOAD_LIMIT: 1G
+#        restart: unless-stopped
+#        labels:
+#            caddy: ${PMA_DOMAIN}
+#            caddy.reverse_proxy: "{{upstreams 8080}}"
+#        networks:
+#            - main-proxy
+#            - default
+#        depends_on:
+#            - mariadb
