@@ -110,7 +110,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "aaix/laravel-islands-filemanager"
+            ]
         }
     },
     "config": {
