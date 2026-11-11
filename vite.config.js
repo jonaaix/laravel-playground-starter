@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => {
                 clientPort: hmrClientPort,
             },
             watch: {
-                ignored: ['**/storage/framework/views/**'],
+                ignored: ['**/vendor/**', '**/storage/**'],
             },
         },
     };
