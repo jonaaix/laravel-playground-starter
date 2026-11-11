@@ -24,12 +24,12 @@ if [[ -e .env ]]; then
     exit 1
 fi
 
-read -r -p "Domain (leave empty for a local setup): " domain
+read -r -p "Domain: " domain
 domain="${domain#http://}"
 domain="${domain#https://}"
 domain="${domain%/}"
 
-if [[ -n "$domain" && ! "$domain" =~ ^[A-Za-z0-9.-]+\.[A-Za-z]{2,}$ ]]; then
+if [[ ! "$domain" =~ ^[A-Za-z0-9.-]+\.[A-Za-z]{2,}$ ]]; then
     echo "\"$domain\" is not a valid domain." >&2
     exit 1
 fi
@@ -40,7 +40,11 @@ while [[ -z "$orbit_release_key" || "$orbit_release_key" == *"'"* ]]; do
     echo
 done
 
-cp .env.example .env
+awk '
+    /^# Uncomment for prod:/ { skipping = 1; next }
+    skipping && /^#/ { next }
+    { skipping = 0; print }
+' .env.example > .env
 
 set_env APP_KEY "base64:$(openssl rand -base64 32)"
 set_env MEDIA_HASH_SALT "$(openssl rand -hex 32)"
@@ -50,23 +54,21 @@ set_env REVERB_APP_KEY "$(random_password)"
 set_env REVERB_APP_SECRET "$(random_password)"
 set_env ORBIT_RELEASE_KEY "'$orbit_release_key'"
 
-if [[ -n "$domain" ]]; then
-    set_env LARAVEL_DOMAIN "$domain"
-    set_env PMA_DOMAIN "pma.$domain"
-    set_env APP_URL "https://$domain"
-    set_env VITE_HMR_HOST "vite.$domain"
-    set_env VITE_HMR_PROTOCOL wss
-    set_env VITE_HMR_CLIENT_PORT 443
-    set_env REVERB_HOST "\"ws.$domain\""
-    set_env REVERB_PORT 443
-    set_env REVERB_SCHEME https
-    ln -sfn compose.prod.yaml compose.yaml
-else
-    ln -sfn compose.local.yaml compose.yaml
-fi
+set_env LARAVEL_DOMAIN "$domain"
+set_env PMA_DOMAIN "pma.$domain"
+set_env APP_URL "https://$domain"
+set_env VITE_HMR_HOST "vite.$domain"
+set_env VITE_HMR_PROTOCOL wss
+set_env VITE_HMR_CLIENT_PORT 443
+set_env REVERB_HOST "\"ws.$domain\""
+set_env REVERB_PORT 443
+set_env REVERB_SCHEME https
+ln -sfn compose.prod.yaml compose.yaml
+
+touch database/database.sqlite
 
 echo
-echo ".env created for ${domain:-a local setup}. Next steps:"
+echo ".env created for $domain. Next steps:"
 echo "  docker compose up -d"
 echo "  docker compose exec php php artisan migrate --force"
 echo "  docker compose exec php php artisan db:seed --force"

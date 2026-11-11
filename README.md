@@ -14,6 +14,6 @@ rm -rf ./.git \
 ```
 
 ```shell
-# Asks for the domain (empty for a local setup) and the Orbit release key
-./quicksetup.sh
+# Asks for the domain and the Orbit release key
+./quicksetup-prod.sh
 ```
