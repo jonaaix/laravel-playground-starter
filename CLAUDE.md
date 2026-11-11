@@ -339,7 +339,6 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Run the narrowest set of tests that covers the change. Pass a file path or `--filter=testName` to `php artisan test --compact`.
 - Rerun a test after each change to it.
 - Run `vendor/bin/pest` to call the test runner directly. It accepts the same file path and `--filter=testName` arguments.
-- After the feature tests pass, ask the user to run the complete suite with `php artisan test --compact`.
 
 === aaix/laravel-tall-architect/tall-architect rules ===
 
@@ -387,6 +386,7 @@ Before implementing a feature: first questions until scope and behaviour are una
 ## Architectural Standards
 
 - **Modular Monolith:** A feature area with its own table(s) belongs in a local module, not the root app. Even a single dedicated table is enough. Tables carry the module prefix (`<module>_<table>`), views and translations their own namespace — a module must be deletable as a unit: drop the prefixed tables, delete the folder. Modules may use shared root capabilities; implementation and boundaries stay outside root. Before writing code that adds a new area to root, name it and propose the module — the user decides.
+- **Find the missing concept.** Applies whenever a requirement doesn't fit the existing data, code or UX. If a second realistic case would hit the same wall, the structure lacks a concept — choose the concept, not the special case.
 
 ### Decomposition & Reuse
 
@@ -395,21 +395,24 @@ Before implementing a feature: first questions until scope and behaviour are una
 - **Reuse before building.** Search the project's components and services first. Name what you found and why it does or doesn't fit. Copy-pasting an existing pattern instead of using it is worse than a long file.
 - Check the installed dependencies first. Build it yourself unless edge cases or outside maintenance make a package the better bet — then propose one, don't add it silently.
 - **Name by role, not by location.** `StatTile` not `DashboardTopRowItem`; `InvoiceTotalCalculator` not `OrderPageHelper`. Role names survive moves; location names don't.
+- **Folders by topic.** Inside any folder, a topic likely to grow gets its own subfolder from its first file. Framework conventions on layout win.
 
 ## Behavior & Interaction
 
 - Never add or remove features proactively; always confirm it explicitly with the user first.
 - Interact in the user's language, produce strictly in English.
 - Ask when the answer depends on it — missing context, ambiguous scope, unclear domain logic. Don't ask what the codebase can tell you.
+- **Design alternatives:** Unhappy with a design or UX? Before reworking, put 4–6 distinct, lettered variants in the project's style on one HTML page at `.ai/project/artifacts/<YYYY-MM-DD>_<topic>.html`. Show it via a chat tool if available, else via a temporary copy in `public/`. Never a hosted artifact.
 
 ## Response Format
 
-- **Section marker:** a `╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌` bar, the section name with its emoji, the same bar again. Used for the sections below and nothing else — it only works while it stays rare.
+- **Tools first:** If the environment offers tools that render content in the chat — questions, cards, charts, timelines, … — build the response with them; the rules below cover what they don't.
+- **Section marker:** a `╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌` bar, the section name with its emoji, the same bar again. Used for the sections below and nothing else.
 - Before implementation work, open with the plan under a `🎯 Plan` marker — what you are about to build, in a few lines. Before the first edit, never as part of the summary afterwards.
-- When the summary runs longer than a few sentences, close it with a `🔑 TL;DR` marker — two or three lines on what is different now. It comes after the details and before `🚀 Next` or `❓ Questions`.
-- Questions go at the end, under a `❓ Questions` marker. Numbered, one per item, continuing across the conversation — never restarting at 1. Each question offers at least two lettered options, one per line, unless only the user can supply the answer; a) is the recommendation, prefixed `⭐ Recommended:`. "ok" accepts every recommendation, or the `🚀 Next` step when no question is pending. Options and alternatives are lettered wherever else they appear.
+- When the summary runs longer than a few sentences, close it with a `🔑 TL;DR` marker — two or three lines on what is different now, before `🚀 Next` or `❓ Questions`.
+- Questions go at the end, under a `❓ Questions` marker. Numbered, one per item, continuing across the conversation — never restarting at 1. Each question offers at least two lettered options, one per line, unless only the user can supply the answer; a) is the recommendation, prefixed with ⭐ and the word "Recommended" in the user's language — `⭐ Recommended:`, `⭐ Empfehlung:`. "ok" accepts every recommendation, or the `🚀 Next` step when no question is pending. Options and alternatives are lettered wherever else they appear.
 - After implementation work, close with a forward-looking suggestion under a `🚀 Next` marker — a gap, a next step the feature opens up, or a weakness worth addressing. One step you could implement next, not something to observe or decide later. If questions are pending, those take the slot instead — never both. Never end a response as if the work were simply over.
-- Emoji mark what a line is, not just in section headings: ⚠️ before a risk or caveat, 🔧 before a change you made or propose, ✅ before something done, 💡 before an idea, and others where they fit. Only at the start of a line, never inside a sentence. Don't decorate prose.
+- Emoji mark what a line is, not just in section headings: ⚠️ before a risk or caveat, 🔧 before a change you made or propose, ✅ before something done, ⏳ before something pending, ❌ before something failed or rejected, 👉 before something the user has to do, 💡 before an idea, and others where they fit. Only at the start of a line, never inside a sentence. Don't decorate prose.
 - End every response with a `╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌` bar, so the reply is visibly closed off from anything that follows.
 
 ## Workflow
@@ -437,7 +440,7 @@ Discussion by default. Reuse before building. Never reset the dev database.
 
 ---
 
-# TALL Stack
+# Laravel Architect
 
 The Laravel layer on top of the engineering rules: the stack, and where their principles land in it.
 
@@ -453,7 +456,6 @@ PHP >= 8.5, Laravel >= 13.x, Filament >= 5.x, Livewire, Alpine.js, Tailwind CSS 
 - Enums must be suffixed with `Enum`.
 - Commands must use the suffix `Cmd` instead of `Command` or nothing.
 - **Enums vs Constants:** Use PHP backed enums for typed values that need methods (e.g., `label()`, `icon()`). Use `const` classes for simple key-value lookups (IDs, disk names, icons). Follow existing conventions — both patterns coexist in this codebase.
-- DTOs are `spatie/laravel-data` objects.
 
 ## i18n
 
@@ -461,14 +463,31 @@ PHP >= 8.5, Laravel >= 13.x, Filament >= 5.x, Livewire, Alpine.js, Tailwind CSS 
 
 ## Architectural Standards
 
-- **Filament & Islands:** Filament is the panel shell; its shipped pages (login, profile, …) may be used as is. Every new view is a Filament page hosting an island (`aaix/laravel-islands`, tables via `aaix/laravel-islands-datagrid`) — CRUD too, no Filament resources, tables or forms. Alpine only for small UI state in Blade. Exception: SEO-relevant pages are Blade + Alpine — islands render client-side.
-- **Where to reuse from:** `resources/views/components/`, `app/Services/`, and the helpers of both islands packages — inventoried in `islands-development/helpers-index.md`. Blueprints for a view and a data table live in the `islands-development` and `islands-datagrid-development` skills.
+- **Filament & Islands:** Filament's shipped pages (login, profile, …) may be used as is. Every new view is a Filament page hosting an island — CRUD too, no Filament resources, tables or forms. Alpine only for small UI state in Blade. Exception: SEO-relevant pages are Blade + Alpine — islands render client-side.
+- **Where to reuse from:** `resources/views/components/`, `app/Services/`, and the helpers the building blocks ship.
 
 ## Workflow
 
 - The dev-database ban covers `migrate:fresh`/`refresh`/`reset`/`rollback` and `db:wipe`.
 - The official generators are `artisan`'s and Filament's.
 - **Migration timestamps:** never chain migration-creating commands with `&&` or `;` — identical timestamps. One command, wait, next.
+
+---
+
+# Building Blocks
+
+Each need has its package. Use it instead of building your own or choosing an alternative;
+if it isn't installed, propose installing it.
+
+- Panel shell → Filament
+- Views → `aaix/laravel-islands`, hosted on a Filament page
+- Data tables → `aaix/laravel-islands-datagrid`
+- Search → `aaix/laravel-islands-search`
+- File manager → `aaix/laravel-islands-filemanager`
+- Gallery → `aaix/laravel-islands-gallery`
+- DTOs → `spatie/laravel-data`
+
+How to use a package comes with the package, as its Boost skills.
 
 ---
 
@@ -481,7 +500,7 @@ take over from a cold start.
 
 - Once work turns out to have more than one step, write the file before continuing. It is not
   a document created for the user — it is how the work is tracked. Never offer it, never ask
-  whether to create it.
+  whether to create it, never mention it in a reply.
 - **Write it straight to its final location:** `.ai/project/planning/<year>/<month>/<YYYY-MM-DD>_<feature>.md`,
   dated by when the work starts. Nothing is moved or archived later.
 - Update it as the work moves: state, milestones, decisions. Overwrite, don't append —
@@ -492,6 +511,12 @@ take over from a cold start.
 - To pick up unfinished work, look at the current and previous month folder for files with
   open milestones. When starting work in an area that has been touched before, look for its
   earlier file.
+- **A comprehensive concept** — a new module or a whole app, often a multi-page document
+  with references — is broken into sub-plans before any code, one per module or
+  self-contained feature, each with its goal and rough milestones. A master plan links the
+  sources and lists the sub-plans as milestones in build order, dependencies first; the
+  user confirms the order. Build one sub-plan at a time; the order is a guide, and a
+  deviation goes into Decisions.
 
 ## File structure
 
@@ -530,16 +555,17 @@ Keep it short enough to stay accurate. A file nobody trusts is worse than no fil
 
 # Feature Book
 
-The Feature Book holds the agreed purpose and workings of every substantial feature, one
-chapter per feature, in clear, precise language, at
-`.ai/project/features/<domain>/<feature>.md`. `index.md` lists feature IDs, links and
-one-line descriptions.
+The Feature Book is your specification: the agreed purpose and workings of every substantial
+feature, one chapter per feature, in clear, precise language, at
+`.ai/project/features/<domain>/<feature>.md`. You check your work against it; it is not a
+deliverable. `index.md` lists feature IDs, links and one-line descriptions.
 
 ## Procedure
 
-- Chapters are part of the work, not documentation created for the user: write and update
-  them without offering or asking. This rule is the user's explicit, standing request for
-  these files.
+- Before changing a feature, read its chapter and build against it. If the request
+  contradicts it, ask before building.
+- Write and update chapters silently: never offer, ask or mention them in a reply. This is
+  the user's explicit, standing request.
 - A feature needs a chapter once its behavior comes from several parts working together —
   a flow, a process, a routine, a chain of functions — rather than from a single function,
   or once it follows agreed rules the code alone would not make obvious.
@@ -553,11 +579,10 @@ necessary for the agreed behavior.
 
 ## Maintenance
 
-Read the relevant chapters before changing a feature. Establish intended behavior before
-implementing a new substantial feature. Update affected passages with authorized behavior
-changes, once per completed change. Refactors and repairs restoring the described behavior
-need no rewrite. Preserve unrelated content, feature IDs and creation dates; update the
-index only when its entries change.
+Establish intended behavior before implementing a new substantial feature. Update affected
+passages with authorized behavior changes, once per completed change. Refactors and repairs
+restoring the described behavior need no rewrite. Preserve unrelated content, feature IDs
+and creation dates; update the index only when its entries change.
 
 ## Skills
 
@@ -566,6 +591,54 @@ Use `feature-book-audit` for comprehensive implementation checks only on user re
 normal work reveals substantial changes since an audit or concrete contradictions, suggest
 an audit once at task completion. Age alone is insufficient; do not scan audit history on
 every task.
+
+---
+
+# Sidenotes
+
+`.ai/project/sidenotes.md` holds what the user mentions in chat that has no other home —
+not in the code, a plan or the Feature Book. At start read it (create if missing).
+
+- Add only facts the user stated. Never your own notes or findings.
+- One telegraph line each, under a `## <area>` heading; reuse an existing area first.
+- When you work on a topic, prune its entries: move what now belongs in a plan or the
+  Feature Book, delete what turned false.
+
+---
+
+# Idea Pool
+
+Ideas for later live in `.ai/project/ideapool/<area>.md`. Use an existing area before
+creating one (create if missing). An idea lives in one place: once it is in a plan, delete
+it here.
+
+- Add what the user puts off, and ideas of your own unless the user rejected them; name each
+  one you add in your reply.
+- One telegraph line each: `- <YYYY-MM-DD> [user|agent]: <idea>`.
+- Read an area's file only when planning in that area, all of them when the user asks;
+  mention matches, never act on them.
+- Delete an entry once the user rejects it.
+
+---
+
+# Board
+
+Agents working in parallel share `.ai/project/board.md`, in exactly this format:
+
+    # Board
+
+    ## <Name>
+    Feature: <feature>
+    Topics: <topic>, <topic>
+    - <what another card depends on>
+
+    ## Offtopic
+    - [<Name>] <anything else>
+
+- At start read it (create if missing), pick a free name, add your card above Offtopic.
+- Re-read before leaving your topics and before committing.
+- A card line may start with `@Name` to address one agent.
+- Remove your card and Offtopic lines when done. On conflict keep all cards.
 
 ---
 
@@ -606,8 +679,6 @@ columns, menu items.
   and stay in it — never mix within one strip.
 - **Every icon is its own component** with a stable name and fixed viewBox. Never inline
   `<svg>` in a consumer; that forks the visual set between callsites.
-- The datagrid ships its own toolbar icons from `@aaix/laravel-islands-datagrid/vue` —
-  islands import them rather than redrawing.
 - **Icon boxes only beside a heading or a stat value.** In tabs, buttons, cells and hover
   affordances icons ship bare.
 
@@ -655,8 +726,8 @@ content belongs under the toolbar it scrolls past, not above it.
 
 ## Formatting
 
-Numbers, dates, money and weights go through `@islands/shared/format.js` — `formatCurrency`,
-`formatDate`, `formatRelative`, `formatWeight`. Figures use `tabular-nums`.
+Numbers, dates, money and weights go through the project's central formatter. Figures use
+`tabular-nums`.
 Times display in the user's timezone, 24-hour format — never the server's.
 
 ## Charts
@@ -677,8 +748,7 @@ Three parts, both edges drawn: header with title and close button above a
 `border-b border-gray-200 dark:border-white/10`, content, footer above a
 `border-t border-gray-200 dark:border-white/10 pt-4`. Cancel (`tone="secondary"`) left of
 the primary action (`tone="cta"`), both at default size — never `size="sm"` in a modal
-footer. Laravel Islands and Filament both ship modal helpers — use them rather than
-rebuilding this by hand.
+footer.
 
 ---
 
