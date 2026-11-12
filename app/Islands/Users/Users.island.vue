@@ -1,10 +1,24 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useIsland, useTranslations, useViewWidth } from '@aaix/laravel-islands/vue';
-import { Button, ConfirmHost, SelectMenu, ToastHost, provideConfirm, provideToasts } from '@aaix/laravel-islands/vue/helpers';
-import { DataTable, SearchInput, SortButton, provideDatagrid, sendJson, useDataTable } from '@aaix/laravel-islands-datagrid/vue';
+import { Button, ConfirmHost, ToastHost, provideConfirm, provideToasts } from '@aaix/laravel-islands/vue/helpers';
+import {
+    ColumnPicker,
+    Combobox,
+    DataTable,
+    SearchInput,
+    SortButton,
+    SortMenu,
+    ViewProfileMenu,
+    provideDatagrid,
+    sendJson,
+    useColumnPicker,
+    useDataTable,
+    useViewProfiles,
+} from '@aaix/laravel-islands-datagrid/vue';
 import UserFormModal from './Components/UserFormModal.vue';
 import UserRow from './Components/UserRow.vue';
+import { userColumns } from './Support/Columns.js';
 
 const island = useIsland();
 const props = island.props;
@@ -15,22 +29,53 @@ provideDatagrid({ t, locale: island._island?.locale });
 const confirm = provideConfirm();
 const toast = provideToasts();
 
-const DEFAULTS = { q: '', status: '', sort: 'created_at', dir: 'asc', page: 1, perPage: props.perPageOptions[0] };
+const COLUMN_REGISTRY = userColumns(t);
 
-const { state, rows, meta, loading, error, onSearchInput, clearSearch, setFilter, setSort, goToPage, setPerPage, reload, fetchData } =
-    useDataTable(props.dataUrl, { defaults: DEFAULTS, initial: props.initial, filterKeys: ['status'] });
+const columns = useColumnPicker(COLUMN_REGISTRY, {
+    remembered: props.preferences.columns,
+    remember: (value) => sendJson(props.preferencesUrl, 'PATCH', { key: 'columns', value }),
+});
+
+const DEFAULTS = {
+    q: '',
+    status: '',
+    sort: 'created_at',
+    dir: 'asc',
+    page: 1,
+    perPage: props.perPageOptions[0],
+    cols: columns.defaultValue,
+    view: '',
+};
+
+const table = useDataTable(props.dataUrl, {
+    defaults: DEFAULTS,
+    initial: { ...props.initial, cols: columns.startValue },
+    filterKeys: ['status'],
+    clientOnly: ['cols', 'view'],
+});
+
+const { state, rows, meta, loading, error, onSearchInput, clearSearch, setFilter, setSort, goToPage, setPerPage, reload, fetchData } = table;
+
+columns.connect(table);
+
+const views = useViewProfiles({
+    state,
+    defaults: DEFAULTS,
+    keys: ['q', 'status', 'sort', 'dir', 'perPage', 'cols'],
+    storeUrl: props.profilesUrl,
+    profileUrl: props.profileUrl,
+    initial: props.profiles,
+    shared: props.activeProfile,
+    plain: { cols: columns.startValue },
+    apply: (payload, options = {}) => reload({ resetPage: true, ...options }),
+    onError: (message) => toast.danger(message || t('Could not save this view')),
+});
+
+const SORT_OPTIONS = COLUMN_REGISTRY.filter((column) => column.sort).map((column) => ({ field: column.sort, label: column.label }));
 
 const STATUS_OPTIONS = computed(() => [
     { value: 'active', label: t('Active') },
     { value: 'disabled', label: t('Disabled') },
-]);
-
-const COLUMNS = computed(() => [
-    { field: 'name', label: t('Name') },
-    { field: 'email', label: t('Email') },
-    { field: null, label: t('Status') },
-    { field: 'last_login_at', label: t('Last login') },
-    { field: 'created_at', label: t('Joined') },
 ]);
 
 const editing = ref(null);
@@ -80,7 +125,13 @@ function clearFilters() {
     reload({ resetPage: true });
 }
 
-onMounted(() => fetchData());
+onMounted(() => {
+    if (views.openDefault()) {
+        return;
+    }
+
+    fetchData();
+});
 </script>
 
 <template>
@@ -95,7 +146,7 @@ onMounted(() => fetchData());
             :meta="meta"
             :per-page="state.perPage"
             :per-page-options="props.perPageOptions"
-            :col-count="COLUMNS.length + 1"
+            :col-count="columns.span.value"
             :loading="loading"
             :error="error"
             :error-message="t('Could not load users')"
@@ -111,26 +162,55 @@ onMounted(() => fetchData());
                     @update:model-value="onSearchInput"
                     @clear="clearSearch()"
                 />
-                <SelectMenu
+                <Combobox
                     variant="filter"
                     :model-value="state.status"
                     :options="STATUS_OPTIONS"
                     :placeholder="t('Status')"
-                    :all-label="t('All')"
+                    :clear-option="false"
                     empty-value=""
                     @update:model-value="setFilter('status', $event)"
+                />
+
+                <ViewProfileMenu
+                    class="ml-auto"
+                    :profiles="views.profiles.value"
+                    :active="views.active.value"
+                    :changed="views.changed.value"
+                    :dirty="views.dirty.value"
+                    :busy="views.busy.value"
+                    @apply="views.open"
+                    @reset="views.reset"
+                    @save="views.save"
+                    @update="views.replace"
+                    @rename="views.rename"
+                    @remove="views.remove"
+                    @set-default="views.setDefault(true)"
+                    @unset-default="views.setDefault(false)"
+                />
+                <SortMenu :options="SORT_OPTIONS" :sort="state.sort" :dir="state.dir" :label="t('Sort by')" @sort="setSort" />
+                <ColumnPicker
+                    :columns="COLUMN_REGISTRY"
+                    :visible="columns.keys.value"
+                    :changed="columns.changed.value"
+                    :label="t('Columns')"
+                    :reset-label="t('Reset columns')"
+                    @update="columns.set"
+                    @reset="columns.reset"
                 />
             </template>
 
             <template #head>
                 <th
-                    v-for="column in COLUMNS"
-                    :key="column.label"
-                    class="px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
+                    v-for="column in columns.visible.value"
+                    :key="column.key"
+                    class="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
+                    :class="column.key === 'actions' ? 'text-right' : 'text-left'"
                 >
+                    <span v-if="column.key === 'actions'" class="sr-only">{{ column.label }}</span>
                     <SortButton
-                        v-if="column.field"
-                        :field="column.field"
+                        v-else-if="column.sort"
+                        :field="column.sort"
                         :label="column.label"
                         :sort="state.sort"
                         :dir="state.dir"
@@ -138,12 +218,9 @@ onMounted(() => fetchData());
                     />
                     <template v-else>{{ column.label }}</template>
                 </th>
-                <th class="px-3 py-2 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    <span class="sr-only">{{ t('Actions') }}</span>
-                </th>
             </template>
 
-            <UserRow v-for="row in rows" :key="row.id" :row="row" @edit="startEdit" @delete="remove" />
+            <UserRow v-for="row in rows" :key="row.id" :row="row" :columns="columns.keys.value" @edit="startEdit" @delete="remove" />
 
             <template #empty>
                 <div class="space-y-2 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
