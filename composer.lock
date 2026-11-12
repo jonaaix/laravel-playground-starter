@@ -321,16 +321,16 @@
         },
         {
             "name": "aaix/laravel-islands",
-            "version": "v1.0.143",
+            "version": "v1.0.144",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jonaaix/laravel-islands.git",
-                "reference": "05da57373249242ca7910e64ae7214e3bad29681"
+                "reference": "5668436846abc3055afba00817918eb1a6e2282a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jonaaix/laravel-islands/zipball/05da57373249242ca7910e64ae7214e3bad29681",
-                "reference": "05da57373249242ca7910e64ae7214e3bad29681",
+                "url": "https://api.github.com/repos/jonaaix/laravel-islands/zipball/5668436846abc3055afba00817918eb1a6e2282a",
+                "reference": "5668436846abc3055afba00817918eb1a6e2282a",
                 "shasum": ""
             },
             "require": {
@@ -366,23 +366,23 @@
             "description": "Elegant frontend islands for Laravel: a framework-agnostic core with server-driven props, real-time subscriptions, actions and translations. Ships a Vue adapter; React adapter planned.",
             "support": {
                 "issues": "https://github.com/jonaaix/laravel-islands/issues",
-                "source": "https://github.com/jonaaix/laravel-islands/tree/v1.0.143"
+                "source": "https://github.com/jonaaix/laravel-islands/tree/v1.0.144"
             },
-            "time": "2026-11-09T19:40:38+00:00",
-            "published-time": "2026-11-09T19:42:36+00:00"
+            "time": "2026-11-12T11:12:13+00:00",
+            "published-time": "2026-11-12T11:22:38+00:00"
         },
         {
             "name": "aaix/laravel-islands-datagrid",
-            "version": "v1.0.41",
+            "version": "v1.0.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jonaaix/laravel-islands-datagrid.git",
-                "reference": "e7346687e247763b0c229b386f30804b74ee7eee"
+                "reference": "727b716ff0e2a3a9fa9e7823c873b96f088a575e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jonaaix/laravel-islands-datagrid/zipball/e7346687e247763b0c229b386f30804b74ee7eee",
-                "reference": "e7346687e247763b0c229b386f30804b74ee7eee",
+                "url": "https://api.github.com/repos/jonaaix/laravel-islands-datagrid/zipball/727b716ff0e2a3a9fa9e7823c873b96f088a575e",
+                "reference": "727b716ff0e2a3a9fa9e7823c873b96f088a575e",
                 "shasum": ""
             },
             "require": {
@@ -419,10 +419,10 @@
             "description": "A server-driven data table for Laravel Islands: one composable and one shell for fetching, sorting, filtering and paginating, so every table in an application shares the same foundation.",
             "support": {
                 "issues": "https://github.com/jonaaix/laravel-islands-datagrid/issues",
-                "source": "https://github.com/jonaaix/laravel-islands-datagrid/tree/v1.0.41"
+                "source": "https://github.com/jonaaix/laravel-islands-datagrid/tree/v1.0.44"
             },
-            "time": "2026-11-02T12:54:02+00:00",
-            "published-time": "2026-11-02T13:16:00+00:00"
+            "time": "2026-11-12T13:49:37+00:00",
+            "published-time": "2026-11-12T13:50:04+00:00"
         },
         {
             "name": "aaix/laravel-islands-filemanager",
@@ -13067,16 +13067,16 @@
     "packages-dev": [
         {
             "name": "aaix/laravel-tall-architect",
-            "version": "1.6.4",
+            "version": "1.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jonaaix/laravel-tall-architect.git",
-                "reference": "c291a9f5f1caac5271a8129e116e8b01459b1fc4"
+                "reference": "b51097c619f4380ae3ca0e92e1f4368bff5ec0ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jonaaix/laravel-tall-architect/zipball/c291a9f5f1caac5271a8129e116e8b01459b1fc4",
-                "reference": "c291a9f5f1caac5271a8129e116e8b01459b1fc4",
+                "url": "https://api.github.com/repos/jonaaix/laravel-tall-architect/zipball/b51097c619f4380ae3ca0e92e1f4368bff5ec0ab",
+                "reference": "b51097c619f4380ae3ca0e92e1f4368bff5ec0ab",
                 "shasum": ""
             },
             "require": {
@@ -13127,10 +13127,10 @@
             ],
             "support": {
                 "issues": "https://github.com/jonaaix/laravel-tall-architect/issues",
-                "source": "https://github.com/jonaaix/laravel-tall-architect/tree/v1.6.4"
+                "source": "https://github.com/jonaaix/laravel-tall-architect/tree/v1.6.5"
             },
-            "time": "2026-11-08T17:07:32+00:00",
-            "published-time": "2026-11-08T17:09:43+00:00"
+            "time": "2026-11-12T12:35:51+00:00",
+            "published-time": "2026-11-12T12:35:59+00:00"
         },
         {
             "name": "brianium/paratest",

@@ -270,16 +270,6 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 - Laravel can be deployed using [Laravel Cloud](https://cloud.laravel.com/), which is the fastest way to deploy and scale production Laravel applications.
 
-=== tests rules ===
-
-# Test Enforcement
-
-- Add or update tests for behavior and logic changes when a test provides meaningful regression coverage.
-- Pure copy, styling, and layout-only changes do not require new or updated tests.
-- When test coverage applies, run the affected tests and ensure they pass.
-- Test the changed behavior and its important failure modes, but do not add tests beyond them.
-- Read the `testing-best-practices` skill before writing tests.
-
 === laravel/core rules ===
 
 # Do Things the Laravel Way
@@ -376,7 +366,7 @@ Before implementing a feature: first questions until scope and behaviour are una
 
 ## i18n
 
-- Don't create translation entries if you are not explicitly asked for it.
+- Every new UI string gets its entries in all locale files in the same change, English as the key; never ship a string untranslated.
 - Keep API response messages in English only.
 
 ## Architectural Standards
@@ -406,9 +396,9 @@ Before implementing a feature: first questions until scope and behaviour are una
 - **Section marker:** a `╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌` bar, the section name with its emoji, the same bar again. Used for the sections below and nothing else.
 - Before implementation work, open with the plan under a `🎯 Plan` marker — what you are about to build, in a few lines. Before the first edit, never as part of the summary afterwards.
 - When the summary runs longer than a few sentences, close it with a `🔑 TL;DR` marker — two or three lines on what is different now, before `🚀 Next` or `❓ Questions`.
-- Questions go at the end, under a `❓ Questions` marker. Numbered, one per item, continuing across the conversation — never restarting at 1. Each question offers at least two lettered options, one per line, unless only the user can supply the answer; a) is the recommendation, prefixed with ⭐ and the word "Recommended" in the user's language — `⭐ Recommended:`, `⭐ Empfehlung:`. "ok" accepts every recommendation, or the `🚀 Next` step when no question is pending. Options and alternatives are lettered wherever else they appear.
+- Questions go at the end, under a `❓ Questions` marker. Numbered, one per item, ascending, continuing across the conversation — never restarting at 1. Each question offers at least two lettered options, one per line, unless only the user can supply the answer; a) is the recommendation, prefixed with ⭐ and the word "Recommended" in the user's language — `⭐ Recommended:`, `⭐ Empfehlung:`. "ok" accepts every recommendation, or the `🚀 Next` step when no question is pending. Options and alternatives are lettered wherever else they appear.
 - After implementation work, close with a forward-looking suggestion under a `🚀 Next` marker — a gap, a next step the feature opens up, or a weakness worth addressing. One step you could implement next, not something to observe or decide later. If questions are pending, those take the slot instead — never both. Never end a response as if the work were simply over.
-- Emoji mark what a line is, not just in section headings: ⚠️ before a risk or caveat, 🔧 before a change you made or propose, ✅ before something done, ⏳ before something pending, ❌ before something failed or rejected, 👉 before something the user has to do, 💡 before an idea, and others where they fit. Only at the start of a line, never inside a sentence. Don't decorate prose.
+- Emoji mark what a line is, not just in section headings: ⚠️ before a risk or caveat, 🔧 before a change you made or propose, ✅ before something done, ⏳ before something pending, ❌ before something failed or rejected, 👉 before something the user has to do, 💡 before an idea, and — sparingly — others that name a line's role, at most two per answer, never as decoration. Only at the start of a line, never inside a sentence. Don't decorate prose.
 - End every response with a `╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌` bar, so the reply is visibly closed off from anything that follows.
 
 ## Workflow
@@ -789,10 +779,13 @@ Rules of thumb — deviate knowingly, not by accident.
 - **Confirm what cannot be undone, and only that.** Cancel, Escape and a click outside all
   mean no.
 - **The whole control is the target**, not the words in it.
-- **Two tiers of action:** attention-worthy gets a tint, repeat actions stay neutral,
-  saturated brand colour is for one-off CTAs. Micro-controls stay small enough not to
-  compete with content.
+- **One CTA per focus surface** — whatever holds the user's whole attention, such as a
+  page or a modal; it is that surface's main action. Inside it, the main action gets a
+  tint, repeat actions stay neutral, destructive ones stay red. Micro-controls stay small
+  enough not to compete with content.
 - **Dropdowns over button rows** beyond three options.
+- **A list opens unfiltered.** A filter narrows and switches off again — it never needs
+  an "All" option. A one-of-many strip is for modes, not filters.
 - **One thing open per row.** Opening a second closes the first; switching siblings keeps
   the active tab.
 - **Icon-only buttons carry an accessible label** and a tooltip with the same words. Never

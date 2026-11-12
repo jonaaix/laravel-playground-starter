@@ -11,8 +11,8 @@ rules of the agent guidelines (`CLAUDE.md` / `AGENTS.md`).
 
 ## Buttons
 
-- **CTA (one-off):** `bg-primary-600 hover:bg-primary-500 text-white font-medium shadow-sm`
-- **Primary, persistent:** `bg-primary-100 text-primary-800 hover:bg-primary-200
+- **CTA (main action of a focus surface):** `bg-primary-600 hover:bg-primary-500 text-white font-medium shadow-sm`
+- **Primary (main action within one):** `bg-primary-100 text-primary-800 hover:bg-primary-200
   dark:bg-primary-500/15 dark:text-primary-200 dark:hover:bg-primary-500/25`
 - **Secondary:** `bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800
   dark:text-gray-300 dark:hover:bg-gray-700`
