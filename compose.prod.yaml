@@ -37,6 +37,9 @@ services:
 
             caddy_2: vite.${LARAVEL_DOMAIN}
             caddy_2.reverse_proxy: "{{upstreams 5178}}"
+
+            caddy_3: orbit.${LARAVEL_DOMAIN}
+            caddy_3.reverse_proxy: "{{upstreams 3000}}"
         restart: unless-stopped
         networks:
             - main-proxy

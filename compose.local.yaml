@@ -21,7 +21,6 @@ services:
             DEV_NPM_RUN_DEV: true
             ENABLE_HORIZON_WORKER: true
             ENABLE_REVERB_SERVER: true
-            ORBIT_RELEASE_KEY: ${ORBIT_RELEASE_KEY}
         ports:
             - "8008:8000" # php
             - "5178:5178" # vite
