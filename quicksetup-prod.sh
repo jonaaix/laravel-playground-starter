@@ -57,9 +57,6 @@ set_env ORBIT_RELEASE_KEY "'$orbit_release_key'"
 set_env LARAVEL_DOMAIN "$domain"
 set_env PMA_DOMAIN "pma.$domain"
 set_env APP_URL "https://$domain"
-set_env VITE_HMR_HOST "vite.$domain"
-set_env VITE_HMR_PROTOCOL wss
-set_env VITE_HMR_CLIENT_PORT 443
 set_env REVERB_HOST "\"ws.$domain\""
 set_env REVERB_PORT 443
 set_env REVERB_SCHEME https
