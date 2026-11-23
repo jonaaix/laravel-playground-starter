@@ -5,6 +5,7 @@
  */
 
 import './echo';
+import { startLiveReload } from './live-reload';
 
 import { startVueIslands } from '@aaix/laravel-islands/vue';
 import { searchIslands } from '@aaix/laravel-islands-search';
@@ -19,3 +20,9 @@ startVueIslands({
     ...import.meta.glob('./islands/**/*.island.vue', { eager: true }),
     ...featureIslands,
 });
+
+if (__WATCH_BUILD__) {
+    // Through a variable, because Vite rewrites a literal new URL('…', import.meta.url) into an asset import.
+    const bundleUrl = import.meta.url;
+    startLiveReload(new URL('../manifest.json', bundleUrl));
+}

@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from "@tailwindcss/vite";
 import vue from '@vitejs/plugin-vue';
@@ -7,16 +7,9 @@ import islands from './vendor/aaix/laravel-islands/vite.js';
 import islandsDatagrid from './vendor/aaix/laravel-islands-datagrid/vite.js';
 import islandsSearch from './vendor/aaix/laravel-islands-search/vite.js';
 import islandsGallery from './vendor/aaix/laravel-islands-gallery/vite.js';
+import watchBuild from './resources/js/vite/watch-build.js';
 
-export default defineConfig(({ mode }) => {
-    const env = loadEnv(mode, process.cwd(), '');
-    const hmrHost = env.VITE_HMR_HOST || 'localhost';
-    const hmrProtocol = env.VITE_HMR_PROTOCOL || 'ws';
-    const hmrClientPort = parseInt(env.VITE_HMR_CLIENT_PORT || '5178');
-    const publicOrigin = hmrProtocol === 'wss'
-        ? `https://${hmrHost}`
-        : `http://${hmrHost}:${hmrClientPort}`;
-
+export default defineConfig(() => {
     return {
         plugins: [
             laravel({
@@ -29,7 +22,18 @@ export default defineConfig(({ mode }) => {
             islandsDatagrid(),
             islandsSearch(),
             islandsGallery(),
+            watchBuild({
+                stylesheets: ['resources/css/app.css', 'resources/css/filament/admin/theme.css'],
+                sourceDirectories: ['resources/views', 'app/Islands', 'app/Filament', 'app/Modules'],
+            }),
         ],
+        build: {
+            rolldownOptions: {
+                experimental: {
+                    incrementalBuild: true,
+                },
+            },
+        },
         resolve: {
             alias: {
                 '@shared': fileURLToPath(
@@ -40,13 +44,12 @@ export default defineConfig(({ mode }) => {
         server: {
             host: '0.0.0.0',
             port: 5178,
-            cors: true,
-            origin: publicOrigin,
-            allowedHosts: [hmrHost, 'localhost'],
+            origin: 'http://localhost:5178',
+            cors: {
+                origin: /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/,
+            },
             hmr: {
-                host: hmrHost,
-                protocol: hmrProtocol,
-                clientPort: hmrClientPort,
+                host: 'localhost',
             },
             watch: {
                 ignored: ['**/vendor/**', '**/storage/**'],
