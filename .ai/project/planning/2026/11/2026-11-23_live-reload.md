@@ -17,7 +17,7 @@ themselves, without a Vite dev server reachable from the internet.
 
 ## State
 
-Done on `feature/live-reload`, not yet deployed. Verified locally: one-shot build ships no live
+Merged into `main`, not yet deployed to the online instance. Verified locally: one-shot build ships no live
 reload; watch start keeps old assets; a new Blade file in `resources/views` or `app/Filament`
 lands in the right stylesheet; rebuilds 0.3–0.5 s; local dev server defines the flag as `false`.
 Hook verified in the laravel-aio image (returns at once, guard holds, runs the package script).
