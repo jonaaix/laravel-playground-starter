@@ -7,6 +7,7 @@ import islands from './vendor/aaix/laravel-islands/vite.js';
 import islandsDatagrid from './vendor/aaix/laravel-islands-datagrid/vite.js';
 import islandsSearch from './vendor/aaix/laravel-islands-search/vite.js';
 import islandsGallery from './vendor/aaix/laravel-islands-gallery/vite.js';
+import watchBuild from './resources/js/vite/watch-build.js';
 
 export default defineConfig(() => {
     return {
@@ -21,7 +22,18 @@ export default defineConfig(() => {
             islandsDatagrid(),
             islandsSearch(),
             islandsGallery(),
+            watchBuild({
+                stylesheets: ['resources/css/app.css', 'resources/css/filament/admin/theme.css'],
+                sourceDirectories: ['resources/views', 'app/Islands', 'app/Filament', 'app/Modules'],
+            }),
         ],
+        build: {
+            rolldownOptions: {
+                experimental: {
+                    incrementalBuild: true,
+                },
+            },
+        },
         resolve: {
             alias: {
                 '@shared': fileURLToPath(

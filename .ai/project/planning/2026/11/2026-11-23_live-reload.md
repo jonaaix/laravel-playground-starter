@@ -2,31 +2,34 @@
 
 ## Goal
 
-Style and island changes show up on the online playground within about a second, without a
-Vite dev server reachable from the internet.
+Asset changes show up on the online playground within about a second and open tabs reload by
+themselves, without a Vite dev server reachable from the internet.
 
 ## Milestones
 
-- [x] Watch build started by an after-boot hook (`docker/after-boot/vite-watch.sh`)
 - [x] Public dev server removed: no `DEV_NPM_RUN_DEV`, no `vite.` Caddy route, no `VITE_HMR_*`
-- [ ] Optional: signal the browser over Reverb after each rebuild (CSS swap / reload)
+- [x] Online instance in prod mode (`ENV_DEV` off, `PROD_SKIP_OPTIMIZE`)
+- [x] After-boot hook starts `npm run watch` in a restart loop, logging to `docker compose logs`
+- [x] `watch-build` Vite plugin: keeps `public/build` on watch start, rescans Tailwind on new templates
+- [x] Rolldown `incrementalBuild`
+- [x] Polling live reload, shipped only in watch builds
+- [x] Agent instructions in `.ai/guidelines/app.md`
 
 ## State
 
-On the online instance the hook runs the watch build; the dev server no longer starts there.
-`vite.config.js` keeps a localhost-only dev server for local Docker setups (port 5178, CORS
-limited to localhost origins, foreign hosts rejected).
+Done on `feature/live-reload`, not yet deployed. Verified locally: one-shot build ships no live
+reload; watch start keeps old assets; a new Blade file in `resources/views` or `app/Filament`
+lands in the right stylesheet; rebuilds 0.3–0.5 s; local dev server defines the flag as `false`.
+Hook verified in the laravel-aio image (returns at once, guard holds, runs the package script).
 
 ## Decisions
 
-- Watch build instead of HMR: ~0.5 s per rebuild, accepted by the user. A dev server on the
-  public instance is rejected as a security hole.
-- `npm run build` stays one-shot: the laravel-aio entrypoint runs it synchronously during boot,
-  in maintenance mode, so `--watch` there would never let the container finish booting.
-- The hook detaches (`nohup setsid`) because the entrypoint runs after-boot hooks before
-  leaving maintenance mode. A shell loop restarts the watcher if it exits.
-- The hook removes `public/hot`, otherwise Laravel keeps pointing at a dev server.
-- `ENV_DEV` stays on in `compose.prod.yaml`: off would make the image run `optimize` and
-  `filament:optimize` at boot, caching routes, config and Filament discovery — live edits on
-  the online instance would not show up until the caches are cleared.
-- `cors: true` was dropped: it answered every origin with `*`.
+- Follows the user's concept `vite-watch-build.md` (prod mode included), with two deviations for this
+  project: the plugin touches both stylesheets (`app.css` and the Filament theme, which scans its own
+  directories), and the local dev server with HMR stays (localhost only, CORS limited to localhost).
+- Prod mode still runs `filament:optimize` and `icons:cache` at boot — `PROD_SKIP_OPTIMIZE` skips only
+  `artisan optimize`. New Filament pages need `php artisan filament:optimize-clear`. Accepted by the user.
+- `npm run build` stays one-shot: the entrypoint runs it synchronously during boot in maintenance mode.
+- The plugin defines `__WATCH_BUILD__` in every mode (not only builds), so the local dev server does
+  not hit an undefined global.
+- Polling instead of Reverb push: no extra channel, no new surface; full reload instead of CSS swap.

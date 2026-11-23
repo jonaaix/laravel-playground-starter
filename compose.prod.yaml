@@ -22,7 +22,7 @@ services:
             - claude_home:/home/laravel
             - ./docker/after-boot:/custom-scripts/after-boot:ro
         environment:
-            ENV_DEV: true
+            PROD_SKIP_OPTIMIZE: true
             ENABLE_HORIZON_WORKER: true
             ENABLE_REVERB_SERVER: true
             ENABLE_AGENT_CHAT: true
