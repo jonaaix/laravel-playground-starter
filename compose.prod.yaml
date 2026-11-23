@@ -20,6 +20,7 @@ services:
         volumes:
             - ./:/app
             - claude_home:/home/laravel
+            - ./docker/after-boot:/custom-scripts/after-boot:ro
         environment:
             ENV_DEV: true
             DEV_NPM_RUN_DEV: true
